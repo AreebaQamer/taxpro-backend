@@ -105,5 +105,17 @@ public ResponseEntity<Map<String, Long>> getStats() {
     stats.put("drafts", postService.getDraftCount());
     return ResponseEntity.ok(stats);
 }
-  
+  // Add this to your PostController.java
+@Operation(summary = "Search posts (Admin)")
+@GetMapping("/posts/search")
+public ResponseEntity<Page<Post>> searchPosts(
+        @RequestParam String keyword,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(required = false) String status) {
+    
+    Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
+    Page<Post> posts = postService.searchPosts(keyword, status, pageable);
+    return ResponseEntity.ok(posts);
+}
 }

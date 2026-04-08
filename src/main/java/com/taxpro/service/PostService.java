@@ -129,5 +129,12 @@ public Page<Post> getPublishedPostsBefore2026(Pageable pageable) {
     public Optional<Post> getPublishedPostById(Long id) {
         return postRepository.findPublishedPostById(id);
     }
-    
+    // Add to PostService.java
+public Page<Post> searchPosts(String keyword, String status, Pageable pageable) {
+    if (status != null && !status.isEmpty()) {
+        return postRepository.searchByKeywordAndStatus(keyword, status, pageable);
+    } else {
+        return postRepository.searchByKeyword(keyword, pageable);
+    }
+}
 }

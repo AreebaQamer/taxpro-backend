@@ -4,6 +4,7 @@ import com.taxpro.entity.Contact;
 import com.taxpro.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,13 +19,16 @@ public class ContactService {
     }
 
     public Contact saveContact(Contact contact) {
-        contact.setCreatedAt(LocalDateTime.now());
+        // Set creation time if not set
+        if (contact.getCreatedAt() == null) {
+            contact.setCreatedAt(LocalDateTime.now());
+        }
         return contactRepository.save(contact);
     }
 
     public Contact getContactById(Long id) {
         return contactRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
     }
 
     public void deleteContact(Long id) {

@@ -35,6 +35,20 @@ public interface PostRepository extends JpaRepository<Post, Long> {
        "FROM wppw_postmeta pm " +
        "WHERE pm.post_id = :postId AND pm.meta_key = '_wp_attached_file' LIMIT 1",
        nativeQuery = true)
-String findThumbnailByPostId(@Param("postId") Long postId);
+    String findThumbnailByPostId(@Param("postId") Long postId);
+// Add to PostRepository.java
+@Query("SELECT p FROM Post p WHERE " +
+       "LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+Page<Post> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
+@Query("SELECT p FROM Post p WHERE " +
+       "p.postStatus = :status AND " +
+       "(LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword, 
+                                     @Param("status") String status, 
+                                     Pageable pageable);
 }

@@ -3,27 +3,29 @@ package com.taxpro.controller;
 import com.taxpro.entity.Contact;
 import com.taxpro.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contacts")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/contact")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ContactController {
 
     @Autowired
     private ContactService contactService;
 
     @GetMapping
-    public List<Contact> getAllContacts() {
-        return contactService.getAllContacts();
+    public ResponseEntity<List<Contact>> getAllContacts() {
+        return ResponseEntity.ok(contactService.getAllContacts());
     }
 
     @PostMapping
     public ResponseEntity<Contact> createContact(@RequestBody Contact contact) {
         Contact savedContact = contactService.saveContact(contact);
-        return ResponseEntity.ok(savedContact);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
     }
 
     @GetMapping("/{id}")

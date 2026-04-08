@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en-gb" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+	<meta name="author" content="Athanasios Rozou">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Learn how to securely pay your ENFIA property tax in Greece through the myAADEapp. Real Estate Law Firm in Thessaloniki, Greece.">
+	<meta name="generator" content="Joomla! - Open Source Content Management">
+	<title>Property Ownership Tax (ENFIA) in Greece</title>
+	<link href="https://www.nomikosodigos.info/en/search?format=opensearch" rel="search" title="OpenSearch Rozou & Associates Law Firm | Greece" type="application/opensearchdescription+xml">
+	<link href="/images/favicon.ico" rel="icon" sizes="any">
+	<link href="/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+        <link href="/media/vendor/joomla-custom-elements/css/joomla-alert.min.css?0.4.1" rel="stylesheet">
+	<link href="/media/system/css/joomla-fontawesome.min.css?5.0.28" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<link href="/templates/yootheme/css/theme.15.css?1775165897" rel="stylesheet">
+	<link href="/media/plg_system_jcepro/site/css/content.min.css?86aa0286b6232c4a5b58f892ce080277" rel="stylesheet">
+	<link href="/plugins/system/cookiespolicynotificationbar/assets/css/cpnb-style.min.css?v=20260213062721" rel="stylesheet" media="all">
+	<link href="/plugins/system/cookiespolicynotificationbar/assets/css/balloon.min.css?v=20260213062721" rel="stylesheet" media="all">
+	<style>
+
+/* BEGIN: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com) */
+.cpnb-outer { border-color: rgba(236, 72, 59, 1); }
+.cpnb-outer.cpnb-div-position-top { border-bottom-width: 1px; }
+.cpnb-outer.cpnb-div-position-bottom { border-top-width: 1px; }
+.cpnb-outer.cpnb-div-position-top-left, .cpnb-outer.cpnb-div-position-top-right, .cpnb-outer.cpnb-div-position-bottom-left, .cpnb-outer.cpnb-div-position-bottom-right { border-width: 1px; }
+.cpnb-message { color: #3b3537; }
+.cpnb-message a { color: #7b828a }
+.cpnb-button, .cpnb-button-ok, .cpnb-m-enableAllButton { -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; font-size: 12px; color: #ffffff; background-color: rgba(59, 53, 55, 1); }
+.cpnb-button:hover, .cpnb-button:focus, .cpnb-button-ok:hover, .cpnb-button-ok:focus, .cpnb-m-enableAllButton:hover, .cpnb-m-enableAllButton:focus { color: #ffffff; background-color: rgba(85, 89, 93, 1); }
+.cpnb-button-decline, .cpnb-button-delete, .cpnb-button-decline-modal, .cpnb-m-DeclineAllButton { color: #ffffff; background-color: rgba(236, 72, 59, 1); }
+.cpnb-button-decline:hover, .cpnb-button-decline:focus, .cpnb-button-delete:hover, .cpnb-button-delete:focus, .cpnb-button-decline-modal:hover, .cpnb-button-decline-modal:focus, .cpnb-m-DeclineAllButton:hover, .cpnb-m-DeclineAllButton:focus { color: #ffffff; background-color: rgba(230, 120, 110, 1); }
+.cpnb-button-cancel, .cpnb-button-reload, .cpnb-button-cancel-modal { color: #ffffff; background-color: rgba(90, 90, 90, 1); }
+.cpnb-button-cancel:hover, .cpnb-button-cancel:focus, .cpnb-button-reload:hover, .cpnb-button-reload:focus, .cpnb-button-cancel-modal:hover, .cpnb-button-cancel-modal:focus { color: #ffffff; background-color: rgba(54, 54, 54, 1); }
+.cpnb-button-settings, .cpnb-button-settings-modal { color: #ffffff; background-color: rgba(59, 53, 55, 1); }
+.cpnb-button-settings:hover, .cpnb-button-settings:focus, .cpnb-button-settings-modal:hover, .cpnb-button-settings-modal:focus { color: #ffffff; background-color: rgba(85, 89, 93, 1); }
+.cpnb-button-more-default, .cpnb-button-more-modal { color: #ffffff; background-color: rgba(59, 53, 55, 1); }
+.cpnb-button-more-default:hover, .cpnb-button-more-modal:hover, .cpnb-button-more-default:focus, .cpnb-button-more-modal:focus { color: #ffffff; background-color: rgba(85, 89, 93, 1); }
+.cpnb-m-SaveChangesButton { color: #ffffff; background-color: rgba(133, 199, 136, 1); }
+.cpnb-m-SaveChangesButton:hover, .cpnb-m-SaveChangesButton:focus { color: #ffffff; background-color: rgba(96, 153, 100, 1); }
+@media only screen and (max-width: 600px) {
+.cpnb-left-menu-toggle::after, .cpnb-left-menu-toggle-button {
+content: "Categories";
+}
+}
+/* END: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com) */
+</style>
+
+        <script src="/media/vendor/awesomplete/js/awesomplete.min.js?1.1.7" defer></script>
+	<script type="application/json" class="joomla-script-options new">{"joomla.jtext":{"JLIB_JS_AJAX_ERROR_OTHER":"An error has occurred while fetching the JSON data: HTTP %s status code.","JLIB_JS_AJAX_ERROR_PARSE":"A parse error has occurred while processing the following JSON data:<br><code style=\"color:inherit;white-space:pre-wrap;padding:0;margin:0;border:0;background:inherit;\">%s<\/code>","ERROR":"Error","MESSAGE":"Message","NOTICE":"Notice","WARNING":"Warning","JCLOSE":"Close","JOK":"OK","JOPEN":"Open"},"finder-search":{"url":"\/en\/component\/finder\/?task=suggestions.suggest&amp;format=json&amp;tmpl=component&amp;Itemid=250"},"system.paths":{"root":"","rootFull":"https:\/\/www.nomikosodigos.info\/","base":"","baseFull":"https:\/\/www.nomikosodigos.info\/"},"csrf.token":"c30a18c23d6b4d51b63f6e5608e0d274"}</script>
+	<script src="/media/system/js/core.min.js?a3d8f8"></script>
+	<script src="/media/com_finder/js/finder.min.js?755761" type="module"></script>
+	<script src="/media/system/js/messages.min.js?9a4811" type="module"></script>
+	<script src="/templates/yootheme/vendor/assets/uikit/dist/js/uikit.min.js?5.0.28"></script>
+	<script src="/templates/yootheme/vendor/assets/uikit/dist/js/uikit-icons-horizon.min.js?5.0.28"></script>
+	<script src="/templates/yootheme/assets/site/js/theme.js?5.0.28"></script>
+	<script src="/plugins/system/cookiespolicynotificationbar/assets/js/cookies-policy-notification-bar.min.js?v=20260213062721"></script>
+	<script src="/media/com_widgetkit/js/maps.js" defer></script>
+	<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.nomikosodigos.info/#/schema/Organization/base","name":"Rozou & Associates Law Firm","url":"https://www.nomikosodigos.info/","logo":{"@type":"ImageObject","@id":"https://www.nomikosodigos.info/#/schema/ImageObject/logo","url":"images/Logo_rozou_and_associates_law_office_google.png","contentUrl":"images/Logo_rozou_and_associates_law_office_google.png","width":3000,"height":3000},"image":{"@id":"https://www.nomikosodigos.info/#/schema/ImageObject/logo"},"sameAs":["https://www.facebook.com/nomikosodigos","https://www.linkedin.com/company/nomikosodigos","https://www.youtube.com/rozouassociateslawfirm","https://www.instagram.com/nomikosodigos/","https://www.tiktok.com/@nomikosodigos"]},{"@type":"WebSite","@id":"https://www.nomikosodigos.info/#/schema/WebSite/base","url":"https://www.nomikosodigos.info/","name":"Rozou & Associates Law Firm | Greece","publisher":{"@id":"https://www.nomikosodigos.info/#/schema/Organization/base"},"potentialAction":{"@type":"SearchAction","target":"https://www.nomikosodigos.info/en/search?q={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"WebPage","@id":"https://www.nomikosodigos.info/#/schema/WebPage/base","url":"https://www.nomikosodigos.info/en/articles/992-property-ownership-tax-in-greece","name":"Property Ownership Tax (ENFIA) in Greece","description":"Learn how to securely pay your ENFIA property tax in Greece through the myAADEapp. Real Estate Law Firm in Thessaloniki, Greece.","isPartOf":{"@id":"https://www.nomikosodigos.info/#/schema/WebSite/base"},"about":{"@id":"https://www.nomikosodigos.info/#/schema/Organization/base"},"inLanguage":"en-GB"},{"@type":"Article","image":"https://www.nomikosodigos.info/images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg","headline":"Property Ownership Tax (ENFIA) in Greece","description":"The Unified Property Ownership Tax (ENFIA) is a mandatory property tax in Greece established in 2014.","author":{"@type":"person","name":"Athanasios Rozou","url":"https://www.nomikosodigos.info/en/about-us/cv/athanasios-rozou"},"datePublished":"2025-03-25T00:00:00+00:00","@id":"https://www.nomikosodigos.info/#/schema/com_content/article/992","isPartOf":{"@id":"https://www.nomikosodigos.info/#/schema/WebPage/base"}}]}</script>
+	<script>window.yootheme ||= {}; yootheme.theme = {"i18n":{"close":{"label":"Close"},"totop":{"label":"Back to top"},"marker":{"label":"Open"},"navbarToggleIcon":{"label":"Open Menu"},"paginationPrevious":{"label":"Previous page"},"paginationNext":{"label":"Next Page"},"searchIcon":{"toggle":"Open Search","submit":"Submit Search"},"slider":{"next":"Next slide","previous":"Previous slide","slideX":"Slide %s","slideLabel":"%s of %s"},"slideshow":{"next":"Next slide","previous":"Previous slide","slideX":"Slide %s","slideLabel":"%s of %s"},"lightboxPanel":{"next":"Next slide","previous":"Previous slide","slideLabel":"%s of %s","close":"Close"}}};</script>
+	<script>
+
+// BEGIN: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+var cpnb_config = {"w357_joomla_caching":0,"w357_position":"bottom-left","w357_show_close_x_icon":"1","w357_hide_after_time":"yes","w357_duration":"600","w357_animate_duration":"2000","w357_limit":"0","w357_message":"Our website uses cookies for traffic measuring purposes and the improvement of your browsing experience. By clicking \u0022OK\u0022 you agree to our use of these cookies while browsing our website.","w357_display_ok_btn":"1","w357_buttonText":"OK","w357_display_decline_btn":"1","w357_buttonDeclineText":"Decline","w357_display_cancel_btn":"0","w357_buttonCancelText":"Cancel","w357_display_settings_btn":"1","w357_buttonSettingsText":"Settings","w357_buttonMoreText":"Click here to read our cookies policy.","w357_buttonMoreLink":"\/en\/cookies-policy","w357_display_more_info_btn":"1","w357_fontColor":"#3b3537","w357_linkColor":"#7b828a","w357_fontSize":"12px","w357_backgroundColor":"rgba(255, 255, 255, 1)","w357_borderWidth":"1","w357_body_cover":"1","w357_overlay_state":"0","w357_overlay_color":"rgba(10, 10, 10, 0.3)","w357_height":"auto","w357_cookie_name":"cookiesDirective","w357_cookie_name_declined":"cpnbCookiesDeclined","w357_cookie_name_cancelled":"cpnbCookiesCancelled","w357_link_target":"_self","w357_popup_width":"800","w357_popup_height":"600","w357_customText":"\u003Cp style=\u0022text-align: justify;\u0022\u003EA \u0022cookie\u0022 is a small set of data that a web page may store on your computer or mobile phone. The cookie allows the site to \u0022remember\u0022 your actions as you browse it. Although the majority of browsers, like for example Google Chrome, Mozilla Firefox, Safari and Opera, support the use of cookies, nevertheless the user can configure his browser not to accept cookies or delete them afterwards.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003EUsefulness of cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003ECookies can perform many functions and are mainly used to measure the traffic of a website as a whole or of only specific subpages. Indicatively, they can track the number of visitors live or per hour of the day, their geographical origins, their operating system and the analysis of their computer screen, the page from which they came (through a search engine, a link from another page or direct entry), the keyword used in the search engine etc. Other cookies can remember, to the user’s benefit, the language selection or his search results in a website. Others may record the failed attempts of a user to enter a website, in order for them (the websites) to require, after a certain number of failed attempts to enter, a further intersection of his personal data, such as for example with the entry of an additional code which is sent by SMS on his mobile phone.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003EUse of cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EThe website under the domain name \u0022nomikosodigos.info\u0022, hereinafter called \u0022the website\u0022, stores cookies on visitors\u0027 terminal equipment to improve their browsing thereon as well as for measuring its traffic. These cookies do not pose a risk to the privacy and sensitive personal data of the users.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003E1. Joomla CMS cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EThe website is designed based on the Joomla! Content Management System (CMS), which by default stores cookies on the user\u0027s computer to improve his browsing on the page. These cookies are the following:\u003C\/p\u003E\r\n\u003Ch3 style=\u0022text-align: justify;\u0022\u003ESession Cookies\u003C\/h3\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EThe session cookie allows for the recognizing of users when they browse a website so that their various options can be memorized and transferred from subpage to subpage. The most common example of this function is the shopping cart on e-stores. When you add products to your cart, the session cookie remembers your choices, in order for the products you chose to be on there, when you are ready to pay. Without the session cookie the page will not remember exactly which products you added to your cart, so when you press \u0022checkout\u0022 your cart would be empty.\u003C\/p\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EAlthough our site does not perform product sales, the session cookies it uses function in exactly the same way. In particular, our website stores two session cookies: one that remembers the selection of the page browsing language and one for memorizing all other user options. Both session cookies are automatically deleted from the user\u0027s computer after the end of his session, which occurs fifteen minutes after his last action within the page. These cookies are first party cookies, i.e. they are placed and read from our page domain.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003E2. Universal Analytics Cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EGoogle Universal Analytics uses cookies to report on user interactions on Google Analytics customers’ websites. These cookies are used to store non-personally identifiable information. The cookies of Google Analytics service, stored through our page on the user\u0027s terminal equipment, are the following:\u003C\/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli style=\u0022text-align: justify;\u0022\u003EA cookie with the name “_ga” used to identify unique visitors to our website and has a shelf life of two years since the user’s last visit on the website.\u003C\/li\u003E\r\n\u003Cli style=\u0022text-align: justify;\u0022\u003EA cookie with the name “_gat” used for the anonymous monitoring of the visitor’s behaviour during his browsing on the site and has a lifetime of ten minutes from the user’s visit on the website. Indicatively, it identifies the entry and exit subpage of the visitor from the website, his retention time in each subpage etc.\u003C\/li\u003E\r\n\u003C\/ul\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EIt is noted that the lifetime of these cookies may be changed by Google without prior notice.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003E3. Cookiesdirective Cookie\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EOnce you have given your consent to accept cookies from this site in accordance with the procedure described below, in a cookie called “cookiesdirective” is stored on your terminal equipment which remembers this consent of yours, and has a lifetime of one year from the granting of the consent. The practical value of the installation of this cookie is to prevent the trouble for granting the same consent each time you visit the site.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003EObligatoriness of consent to store cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EThe installation and use of “cookies” is regulated specifically by paragraph 5 of article 4 of N. 3471\/2006 (which transposed Directive 2002\/58\/EC into the Greek law) according to which the installation and use of the “cookie” is permitted only with the consent of the user. A website can install such a “cookie” only if each user has given his consent after a clear and comprehensive information for that installation, the purpose of the processing, the right of access and any recipients of the data. This consent may be given through appropriate settings in your web browser or through another application.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003EReceiving consent from visitors\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EGiven that the cookies of the Google Universal Analytics service are third party cookies with respect to our page and do not fall into the category of traffic analysis cookies in the exception of par. 5 of article 4 of N. 3471\/2006, our page receives the consent of the visitor before storing the cookies in his terminal equipment. The user may at any time delete the cookies which the current pages stored in his browser, through its settings.\u003C\/p\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EIn particular, the site uses a special plugin, which prevents the cookies from being stored in the terminal equipment of the visitor, if his consent is not received first through the touch of an acceptance button. In the vicinity of a link acceptance button, leading to the present cookies use policy of the website, where the user can read all the necessary information that will enable him to take a decision to grant consent or not for accepting cookies.\u003C\/p\u003E\r\n\u003Ch2 style=\u0022text-align: justify;\u0022\u003EControl and deletion of cookies\u003C\/h2\u003E\r\n\u003Cp style=\u0022text-align: justify;\u0022\u003EYou can control and\/or delete cookies as you wish – for details, see \u003Ca href=\u0022http:\/\/www.aboutcookies.org\u0022 target=\u0022_blank\u0022 rel=\u0022noopener\u0022 title=\u0022Click here to read more about cookies.\u0022\u003Ewww.aboutcookies.org\u003C\/a\u003E. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. If you do this, however, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.\u003C\/p\u003E","w357_more_info_btn_type":"menu_item","w357_blockCookies":"1","w357_autoAcceptAfterScrolling":"0","w357_numOfScrolledPixelsBeforeAutoAccept":"300","w357_reloadPageAfterAccept":"0","w357_enableConfirmationAlerts":"0","w357_enableConfirmationAlertsForAcceptBtn":0,"w357_enableConfirmationAlertsForDeclineBtn":0,"w357_enableConfirmationAlertsForDeleteBtn":0,"w357_confirm_allow_msg":"Performing this action will enable all cookies set by this website. Are you sure that you want to enable all cookies on this website?","w357_confirm_delete_msg":"Performing this action will remove all cookies set by this website. Are you sure that you want to disable and delete all cookies from your browser?","w357_show_in_iframes":"0","w357_shortcode_is_enabled_on_this_page":0,"w357_base_url":"https:\/\/www.nomikosodigos.info\/","w357_base_ajax_url":"https:\/\/www.nomikosodigos.info\/","w357_current_url":"https:\/\/www.nomikosodigos.info\/en\/articles\/992-property-ownership-tax-in-greece","w357_always_display":"0","w357_show_notification_bar":true,"w357_expiration_cookieSettings":"365","w357_expiration_cookieAccept":"365","w357_expiration_cookieDecline":"180","w357_expiration_cookieCancel":"3","w357_cookie_domain":"","w357_accept_button_class_notification_bar":"cpnb-accept-btn","w357_decline_button_class_notification_bar":"cpnb-decline-btn","w357_cancel_button_class_notification_bar":"cpnb-cancel-btn","w357_settings_button_class_notification_bar":"cpnb-settings-btn","w357_moreinfo_button_class_notification_bar":"cpnb-moreinfo-btn","w357_accept_button_class_notification_bar_modal_window":"cpnb-accept-btn-m","w357_decline_button_class_notification_bar_modal_window":"cpnb-decline-btn-m","w357_save_button_class_notification_bar_modal_window":"cpnb-save-btn-m","w357_buttons_ordering":"[\u0022ok\u0022,\u0022decline\u0022,\u0022cancel\u0022,\u0022settings\u0022,\u0022moreinfo\u0022]"};
+// END: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+</script>
+	<script>
+
+// BEGIN: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+var cpnb_cookiesCategories = {"cookie_categories_group0":{"cookie_category_id":"required-cookies","cookie_category_name":"Required Cookies","cookie_category_description":"The Required or Functional cookies relate to the functionality of our websites and allow us to improve the service we offer to you through our websites, for example by allowing you to carry information across pages of our website to avoid you having to re-enter information, or by recognizing your preferences when you return to our website.","cookie_category_checked_by_default":"2","cookie_category_status":"1"},"cookie_categories_group1":{"cookie_category_id":"analytical-cookies","cookie_category_name":"Analytical Cookies","cookie_category_description":"Analytical cookies allow us to recognize and to count the number of visitors to our website, to see how visitors move around the website when they are using it and to record which content viewers view and are interested in. This helps us to determine how frequently particular pages and advertisements are visited and to determine the most popular areas of our website. This helps us to improve the service which we offer to you by helping us make sure our users are finding the information they are looking for, by providing anonymized demographic data to third parties in order to target advertising more appropriately to you, and by tracking the success of advertising campaigns on our website.","cookie_category_checked_by_default":"1","cookie_category_status":"1"},"cookie_categories_group2":{"cookie_category_id":"social-media-cookies","cookie_category_name":"Social Media","cookie_category_description":"These cookies allow you to share Website content with social media platforms (e.g., Facebook, Twitter, Instagram). We have no control over these cookies as they are set by the social media platforms themselves.","cookie_category_checked_by_default":"1","cookie_category_status":"1"},"cookie_categories_group3":{"cookie_category_id":"targeted-advertising-cookies","cookie_category_name":"Targeted Advertising Cookies","cookie_category_description":"Advertising and targeting cookies are used to deliver advertisements more relevant to you, but can also limit the number of times you see an advertisement and be used to chart the effectiveness of an ad campaign by tracking users’ clicks. They can also provide security in transactions. They are usually placed by third-party advertising networks with a website operator’s permission but can be placed by the operator themselves. They can remember that you have visited a website, and this information can be shared with other organizations, including other advertisers. They cannot determine who you are though, as the data collected is never linked to your profile. ","cookie_category_checked_by_default":"1","cookie_category_status":"1"}};
+// END: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+</script>
+	<script>
+
+// BEGIN: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+var cpnb_manager = {"w357_m_modalState":"1","w357_m_floatButtonState":"1","w357_m_floatButtonPosition":"bottom_left","w357_m_HashLink":"cookies","w357_m_modal_menuItemSelectedBgColor":"rgba(200, 200, 200, 1)","w357_m_saveChangesButtonColorAfterChange":"rgba(13, 92, 45, 1)","w357_m_floatButtonIconSrc":"https:\/\/www.nomikosodigos.info\/plugins\/system\/cookiespolicynotificationbar\/assets\/icons\/cpnb-cookies-manager-icon-1-64x64.png","w357_m_FloatButtonIconType":"image","w357_m_FloatButtonIconFontAwesomeName":"fas fa-cookie-bite","w357_m_FloatButtonIconFontAwesomeSize":"fa-lg","w357_m_FloatButtonIconFontAwesomeColor":"rgba(61, 47, 44, 0.84)","w357_m_FloatButtonIconUikitName":"cog","w357_m_FloatButtonIconUikitSize":"1","w357_m_FloatButtonIconUikitColor":"rgba(61, 47, 44, 0.84)","w357_m_floatButtonText":"Cookies Manager","w357_m_modalHeadingText":"Advanced Cookie Settings","w357_m_checkboxText":"Enabled","w357_m_lockedText":"(Locked)","w357_m_EnableAllButtonText":"Allow All Cookies","w357_m_DeclineAllButtonText":"Decline All Cookies","w357_m_SaveChangesButtonText":"Save Settings","w357_m_confirmationAlertRequiredCookies":"These cookies are strictly necessary for this website. You can\u0027t disable this category of cookies. Thank you for understanding!"};
+// END: Cookies Policy Notification Bar - J! system plugin (Powered by: Web357.com)
+</script>
+	<script>GOOGLE_MAPS_API_KEY = "AIzaSyAlhnYxWs5AmbO_nNTdtSXcT5EAQxclqyU";</script>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5K7SNF');</script>
+
+    
+<!-- BEGIN: Google Analytics(analytical-cookies-alltime) -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'denied',
+    'security_storage': 'denied',
+    'personalization_storage': 'denied',
+    'ad_personalization': 'denied',
+    'ad_user_data': 'denied'
+});
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E7Y47L280W"></script>
+
+<script>
+gtag('js', new Date());
+gtag('config', 'G-E7Y47L280W'); // Google Analytics and Google Tag Manager (it's the same)
+gtag('config', 'AW-1054560394'); // Google Ads
+</script>
+<!-- END: Google Analytics -->
+
+<!-- BEGIN: Google Analytics (After Consent)(analytical-cookies-after) -->
+<script data-cpnb-category="analytical-cookies"  data-cpnb-load="after" data-cpnb-js="PCEtLSBBRlRFUiBDT05TRU5UIC0tPg0KPHNjcmlwdD4NCmd0YWcoJ2NvbnNlbnQnLCAndXBkYXRlJywgew0KICAgICdhZF9zdG9yYWdlJzogJ2dyYW50ZWQnLA0KICAgICdhbmFseXRpY3Nfc3RvcmFnZSc6ICdncmFudGVkJywNCiAgICAnZnVuY3Rpb25hbGl0eV9zdG9yYWdlJzogJ2dyYW50ZWQnLA0KICAgICdzZWN1cml0eV9zdG9yYWdlJzogJ2dyYW50ZWQnLA0KICAgICdwZXJzb25hbGl6YXRpb25fc3RvcmFnZSc6ICdncmFudGVkJywNCiAgICAnYWRfcGVyc29uYWxpemF0aW9uJzogJ2dyYW50ZWQnLA0KICAgICdhZF91c2VyX2RhdGEnOiAnZ3JhbnRlZCcNCn0pOw0KPC9zY3JpcHQ+"></script>
+<!-- END: Google Analytics (After Consent) -->
+
+<!-- BEGIN: Google Analytics (After Decline)(analytical-cookies-decline) -->
+<script data-cpnb-category="analytical-cookies"  data-cpnb-load="decline" data-cpnb-js="PCEtLSBBRlRFUiBERUNMSU5FIC0tPg0KPHNjcmlwdD4NCmd0YWcoJ2NvbnNlbnQnLCAndXBkYXRlJywgew0KICAgICdhZF9zdG9yYWdlJzogJ2RlbmllZCcsDQogICAgJ2FuYWx5dGljc19zdG9yYWdlJzogJ2RlbmllZCcsDQogICAgJ2Z1bmN0aW9uYWxpdHlfc3RvcmFnZSc6ICdkZW5pZWQnLA0KICAgICdzZWN1cml0eV9zdG9yYWdlJzogJ2RlbmllZCcsDQogICAgJ3BlcnNvbmFsaXphdGlvbl9zdG9yYWdlJzogJ2RlbmllZCcsDQogICAgJ2FkX3BlcnNvbmFsaXphdGlvbic6ICdkZW5pZWQnLA0KICAgICdhZF91c2VyX2RhdGEnOiAnZGVuaWVkJw0KfSk7DQo8L3NjcmlwdD4="></script>
+<!-- END: Google Analytics (After Decline) -->
+</head>
+    <body class="">
+
+        <div class="uk-hidden-visually uk-notification uk-notification-top-left uk-width-auto">
+            <div class="uk-notification-message">
+                <a href="#tm-main" class="uk-link-reset">Skip to main content</a>
+            </div>
+        </div>
+
+        
+        
+        <div class="tm-page">
+
+                        
+
+
+<header class="tm-header-mobile uk-hidden@m">
+
+
+    
+        <div class="uk-navbar-container">
+
+            <div class="uk-container uk-container-expand">
+                <nav class="uk-navbar" uk-navbar="{&quot;align&quot;:&quot;left&quot;,&quot;container&quot;:&quot;.tm-header-mobile&quot;,&quot;boundary&quot;:&quot;.tm-header-mobile .uk-navbar-container&quot;}">
+
+                    
+                                        <div class="uk-navbar-center">
+
+                                                    
+<div class="uk-navbar-item" id="module-196">
+
+    
+    
+<div class="uk-margin-remove-last-child custom" ><p><img src="/images/logo_rozou_and_associates_3_50X172.png" alt="Rozou and Associates Law Firm" width="172" height="50" class="uk-responsive-height"></p></div>
+
+</div>
+
+                        
+                        
+                    </div>
+                    
+                                        <div class="uk-navbar-right">
+
+                        
+                                                    <a uk-toggle href="#tm-dialog-mobile" class="uk-navbar-toggle">
+
+        
+        <div uk-navbar-toggle-icon></div>
+
+        
+    </a>
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+
+        </div>
+
+    
+
+
+
+        <div id="tm-dialog-mobile" uk-offcanvas="container: true; overlay: true" mode="slide">
+        <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+
+                        <button class="uk-offcanvas-close uk-close-large" type="button" uk-close uk-toggle="cls: uk-close-large; mode: media; media: @s"></button>
+            
+                        <div class="uk-margin-auto-bottom">
+                
+<div class="uk-grid uk-child-width-1-1" uk-grid>    <div>
+<div class="uk-panel" id="module-190">
+
+    
+    
+<ul class="uk-nav uk-nav-default uk-nav-accordion" uk-nav="targets: &gt; .js-accordion">
+    
+	<li class="item-250"><a href="/en/">Home</a></li>
+	<li class="item-300 js-accordion uk-parent"><a href>About Us <span uk-nav-parent-icon></span></a>
+	<ul class="uk-nav-sub">
+
+		<li class="item-405"><a href="/en/about-us/our-office">Our Firm</a></li>
+		<li class="item-407"><a href="/en/about-us/cv">Our Lawyers</a></li>
+		<li class="item-1057"><a href="/en/about-us/activity">Activity</a></li></ul></li>
+	<li class="item-351"><a href="/en/services">Services</a></li>
+	<li class="item-410 uk-active"><a href="/en/articles">Articles</a></li>
+	<li class="item-484 js-accordion uk-parent"><a href>Tools <span uk-nav-parent-icon></span></a>
+	<ul class="uk-nav-sub">
+
+		<li class="item-834"><a href="/en/tools/mutual-consent-divorce">Mutual Consent Divorce Form</a></li></ul></li>
+	<li class="item-264"><a href="/en/contact">Contact</a></li></ul>
+
+</div>
+</div>    <div>
+<div class="uk-panel" id="module-191">
+
+    
+    
+<div class="uk-panel mod-languages">
+
+    
+    
+        <ul class="uk-subnav">
+                                            <li >
+                    <a href="/guide/simple-legal">
+                                                                                    <img title="Ελληνικά (EL)" src="/media/mod_languages/images/el.gif" alt="Ελληνικά (EL)">                                                                        </a>
+                </li>
+                                                            <li >
+                    <a href="https://www.nomikosodigos.info/en/articles/992-property-ownership-tax-in-greece">
+                                                                                    <img title="English (UK)" src="/media/mod_languages/images/en.gif" alt="English (UK)">                                                                        </a>
+                </li>
+                                                            <li >
+                    <a href="/ru/articles">
+                                                                                    <img title="Русский (RU)" src="/media/mod_languages/images/ru.gif" alt="Русский (RU)">                                                                        </a>
+                </li>
+                                    </ul>
+
+    
+    
+</div>
+
+</div>
+</div>    <div>
+<div class="uk-panel" id="module-tm-2">
+
+    
+    
+
+    <form action="/en/search" method="get" role="search" class="uk-search js-finder-searchform uk-search-default uk-width-1-1"><span uk-search-icon></span><input name="q" class="js-finder-search-query uk-search-input" placeholder="Search" required aria-label="Search" type="search"></form>
+    
+
+</div>
+</div></div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    
+    
+
+</header>
+
+
+<div class="tm-toolbar tm-toolbar-default uk-visible@m">
+    <div class="uk-container uk-flex uk-flex-middle">
+
+                <div>
+            <div class="uk-grid-medium uk-child-width-auto uk-flex-middle" uk-grid="margin: uk-margin-small-top">
+
+                                <div>
+<div class="uk-panel" id="module-90">
+
+    
+    
+<div class="uk-panel mod-languages">
+
+    
+    
+        <ul class="uk-subnav">
+                                            <li >
+                    <a href="/guide/simple-legal">
+                                                                                    <img title="Ελληνικά (EL)" src="/media/mod_languages/images/el.gif" alt="Ελληνικά (EL)">                                                                        </a>
+                </li>
+                                                                                        <li >
+                    <a href="/ru/articles">
+                                                                                    <img title="Русский (RU)" src="/media/mod_languages/images/ru.gif" alt="Русский (RU)">                                                                        </a>
+                </li>
+                                    </ul>
+
+    
+    
+</div>
+
+</div>
+</div>
+                
+                
+            </div>
+        </div>
+        
+                <div class="uk-margin-auto-left">
+            <div class="uk-grid-medium uk-child-width-auto uk-flex-middle" uk-grid="margin: uk-margin-small-top">
+                <div>
+<div class="uk-panel" id="module-297">
+
+    
+    
+<div class="uk-margin-remove-last-child custom" ><p class="uk-text-bolder uk-text-muted"><a href="tel:+302310280874"> <button class="uk-button uk-button-primary uk-button-small"><span class="uk-margin-small-right" uk-icon="receiver"></span>2310280874</button> </a></p></div>
+
+</div>
+</div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<header class="tm-header uk-visible@m">
+
+
+
+    
+        <div class="uk-navbar-container">
+
+            <div class="uk-container">
+                <nav class="uk-navbar" uk-navbar="{&quot;align&quot;:&quot;left&quot;,&quot;container&quot;:&quot;.tm-header&quot;,&quot;boundary&quot;:&quot;.tm-header .uk-navbar-container&quot;}">
+
+                                        <div class="uk-navbar-left ">
+
+                                                    
+<div class="uk-navbar-item" id="module-106">
+
+    
+    
+<div class="uk-margin-remove-last-child custom" ><p><img src="/images/logo_rozou_and_associates_3_50X172.png" alt="Rozou and Associates Law Firm" width="172" height="50" /></p></div>
+
+</div>
+
+                        
+                        
+                        
+                    </div>
+                    
+                    
+                                        <div class="uk-navbar-right">
+
+                                                    
+<ul class="uk-navbar-nav" id="module-88">
+    
+	<li class="item-250"><a href="/en/">Home</a></li>
+	<li class="item-300 uk-parent"><a role="button">About Us</a>
+	<div class="uk-drop uk-navbar-dropdown" mode="hover" pos="bottom-left"><div><ul class="uk-nav uk-navbar-dropdown-nav">
+
+		<li class="item-405"><a href="/en/about-us/our-office">Our Firm</a></li>
+		<li class="item-407"><a href="/en/about-us/cv">Our Lawyers</a></li>
+		<li class="item-1057"><a href="/en/about-us/activity">Activity</a></li></ul></div></div></li>
+	<li class="item-351"><a href="/en/services">Services</a></li>
+	<li class="item-410 uk-active"><a href="/en/articles">Articles</a></li>
+	<li class="item-484 uk-parent"><a role="button">Tools</a>
+	<div class="uk-drop uk-navbar-dropdown" mode="hover" pos="bottom-left"><div><ul class="uk-nav uk-navbar-dropdown-nav">
+
+		<li class="item-834"><a href="/en/tools/mutual-consent-divorce">Mutual Consent Divorce Form</a></li></ul></div></div></li>
+	<li class="item-264"><a href="/en/contact">Contact</a></li></ul>
+
+                        
+                                                    
+<div class="uk-navbar-item" id="module-tm-1">
+
+    
+    
+
+    <form action="/en/search" method="get" role="search" class="uk-search js-finder-searchform uk-search-navbar"><span uk-search-icon></span><input name="q" class="js-finder-search-query uk-search-input" placeholder="Search" required aria-label="Search" type="search"></form>
+    
+
+</div>
+
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+
+        </div>
+
+    
+
+
+
+
+
+
+
+</header>
+
+            
+            
+
+            <main id="tm-main">
+
+                
+                <div id="system-message-container" aria-live="polite"></div>
+
+                <!-- Builder #template-bK9ZyCAt --><style class="uk-margin-remove-adjacent">#template-bK9ZyCAt\#0 h2{font-size: 20px;}</style>
+<div class="uk-section-default uk-section uk-padding-remove-top uk-section-xsmall-bottom">
+    
+        
+        
+        
+            
+                
+                    
+<div class="uk-grid tm-grid-expand uk-grid-collapse" uk-grid>
+    
+        
+<div class="uk-width-2-3@m">
+    
+        
+            
+            
+            
+                
+                    
+<div class="uk-margin">
+        <picture><source type="image/avif" srcset="/media/yootheme/cache/47/stockphotosecrets_iss_4567_07377_1400x700-4743d605.avif 768w, /en/component/ajax/?p=cache/26/stockphotosecrets_iss_4567_07377_1400x700-26c6135b.avif&amp;src=images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg&amp;thumbnail=1024,512,&amp;type=avif,75&amp;hash=b378535c 1024w, /media/yootheme/cache/83/stockphotosecrets_iss_4567_07377_1400x700-83016851.avif 1400w" sizes="(min-width: 1400px) 1400px"><source type="image/webp" srcset="/en/component/ajax/?p=cache/f5/stockphotosecrets_iss_4567_07377_1400x700-f5e7778e.webp&amp;src=images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg&amp;thumbnail=768,384,&amp;type=webp,85&amp;hash=38a42188 768w, /en/component/ajax/?p=cache/fc/stockphotosecrets_iss_4567_07377_1400x700-fc3586ba.webp&amp;src=images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg&amp;thumbnail=1024,512,&amp;type=webp,85&amp;hash=ed41e8fc 1024w, /en/component/ajax/?p=cache/af/stockphotosecrets_iss_4567_07377_1400x700-af7122cb.webp&amp;src=images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg&amp;type=webp,85&amp;hash=acd1a5c0 1400w" sizes="(min-width: 1400px) 1400px"><img class="el-image" src="/images/article_images/stockphotosecrets_iss_4567_07377_1400x700.jpg" alt="A vintage brass key resting on a page with taxation-related terminology visible, including the word &quot;tax&quot; prominently displayed beneath the key. The image suggests concepts of access, compliance, or unlocking tax solutions." loading="lazy" width="1400" height="700"></picture>    
+    
+</div>
+                
+            
+        
+    
+</div>
+<div class="uk-grid-item-match uk-width-1-3@m">
+        <div class="uk-tile-secondary uk-tile  uk-tile-small">    
+        
+            
+            
+            
+                
+                    
+
+<nav aria-label="Breadcrumb" class="uk-margin">
+    <ul class="uk-breadcrumb uk-margin-remove-bottom" vocab="https://schema.org/" typeof="BreadcrumbList">
+    
+            <li property="itemListElement" typeof="ListItem">            <a href="/en/" property="item" typeof="WebPage"><span property="name">Αρχική</span></a>
+            <meta property="position" content="1">
+            </li>    
+            <li property="itemListElement" typeof="ListItem">            <a href="/en/articles" property="item" typeof="WebPage"><span property="name">Articles</span></a>
+            <meta property="position" content="2">
+            </li>    
+    </ul>
+</nav>
+
+<h1 class="uk-h2 uk-heading-divider uk-margin">
+    
+        
+                    Property Ownership Tax (ENFIA) in Greece        
+        
+    
+</h1><div class="uk-panel uk-text-lead uk-margin">Athanasios Rozou</div>
+                
+            
+        
+        </div>    
+</div>
+    
+</div>
+<div class="uk-grid-margin uk-container uk-container-xsmall">
+        <div class="uk-grid tm-grid-expand uk-child-width-1-1">    
+        
+<div class="uk-width-1-1">
+    
+        
+            
+            
+            
+                
+                    <div class="uk-panel uk-margin" id="template-bK9ZyCAt#0"><h2 style="text-align: justify;">The Unified Property Ownership Tax (ENFIA) is a mandatory property tax in Greece established in 2014.</h2>
+<p style="text-align: justify;">This tax applies to all property types throughout the country, including buildings, residential lots, and agricultural land. The amount due is calculated based on each property's size, location, and specific characteristics. ENFIA is assessed annually on all properties owned as of January 1st. The tax calculation uses the information recorded in your Property Data Declaration (E9 form), which must be accurately filed with the Greek tax authorities.</p>
+ 
+<h3 style="text-align: justify;">myAADEapp: Mobile Tax Management for Property Owners in Greece</h3>
+<p style="text-align: justify;">The «myAADEapp» is the official mobile application of the Independent Authority for Public Revenue (AADE) in Greece, specifically designed to enhance tax management convenience for foreign property owners. This authorized digital platform enables non-resident property investors to monitor their tax account status and execute payments through credit card transactions or the IRIS payment system, with immediate crediting of outstanding obligations.</p>
+<p style="text-align: justify;">The application provides foreign property owners with the capability to update their banking information by modifying the IBAN associated with their account, ensuring efficient processing of any tax refunds. Users maintain comprehensive access to their appointment schedules, review the status of previously submitted inquiries to AADE, and receive all official communications directly through the platform.</p>
+<p style="text-align: justify;">A particularly valuable feature for international property owners is the myWallet section, where essential documentation including tax certificates and clearance statements can be downloaded and securely stored for future reference. The application delivers personalized, timely notifications regarding relevant tax matters affecting foreign-owned properties in Greece, ensuring compliance with local regulations regardless of the owner's geographic location.</p>
+<p style="text-align: justify;">This mobile solution serves as a complementary tool to the main myAADE portal, offering streamlined property tax management functionality optimized for smartphones and tablets, catering to the mobile needs of the international property investment community in Greece.</p>
+<h3 style="text-align: justify;">ENFIA Payment Procedure</h3>
+<h4 style="text-align: justify;">Application Installation</h4>
+<p style="text-align: justify;">Begin by downloading the official "myAADEapp" application from the App Store or Google Play Store. This application serves as the authorized mobile platform of the Greek Independent Authority for Public Revenue (Ανεξάρτητη Αρχή Δημοσίων Εσόδων or ΑΑΔΕ).</p>
+<h4 style="text-align: justify;">Authentication Process</h4>
+<p style="text-align: justify;">Upon installation, proceed to authenticate using your designated username and password credentials. For clients who have acquired property through our services, we have previously communicated these authentication details to facilitate your access to the platform.</p>
+<h4 style="text-align: justify;">Payment Navigation</h4>
+<p style="text-align: justify;">Access your tax obligations by navigating through the following pathway: My Account &gt; Debts and Payments &gt; Payment of Non-Settled Debts. The financial amount displayed in this section represents your annual property tax assessment (ENFIA). Continue the payment process by selecting "Next" and following the guided instructions to complete your transaction using a debit card.</p>
+<h4 style="text-align: justify;">Important Timeline Considerations</h4>
+<p style="text-align: justify;">The Greek tax authorities typically issue the Annual Property Tax assessment between February and March each year. We strongly recommend recording this financial obligation in your calendar system to ensure timely compliance with Greek property tax regulations.</p>
+<p style="text-align: justify;">Your prompt attention to this annual requirement will maintain your property's good standing with Greek tax authorities and prevent any potential penalties associated with delayed payments.</p></div>
+<nav class="uk-text-center">
+    <ul class="uk-pagination uk-margin-remove-bottom uk-flex-center">
+    
+        
+        
+                        <li>
+                            <a href="/en/articles/991-pet-ownership-in-greece">Next <span uk-pagination-next></span></a>
+            </li>
+
+        
+    
+    </ul>
+</nav>
+                
+            
+        
+    
+</div>
+        </div>    
+</div>
+                
+            
+        
+    
+</div>
+
+                
+            </main>
+
+            
+
+                        <footer>
+                <!-- Builder #footer -->
+<div class="uk-section-default uk-section uk-section-xsmall">
+    
+        
+        
+        
+            
+                                <div class="uk-container">                
+                    
+<div class="uk-grid-margin uk-container uk-container-xsmall">
+        <div class="uk-grid tm-grid-expand uk-child-width-1-1">    
+        
+<div class="uk-width-1-1">
+    
+        
+            
+            
+            
+                
+                    
+<div class="uk-margin uk-text-center">
+        <img class="el-image" src="/images/frontpage_images/stockphotosecrets_divider_1_IST_20360_01647.png" alt loading="lazy" width="400">    
+    
+</div>
+                
+            
+        
+    
+</div>
+        </div>    
+</div>
+                                </div>                
+            
+        
+    
+</div>
+<div class="uk-section-secondary uk-section uk-section-small">
+    
+        
+        
+        
+            
+                                <div class="uk-container uk-container-large">                
+                    
+<div class="uk-grid-margin uk-grid tm-grid-expand" uk-grid>
+    
+        
+<div class="uk-width-1-3@m">
+    
+        
+            
+            
+            
+                
+                    <div>
+<div class="uk-panel" id="module-148">
+
+    
+    
+<div class="uk-margin-remove-last-child custom" ><p class="uk-text-muted uk-text-bold uk-text-medium" style="text-align: center;">ROZOU AND ASSOCIATES LAW FIRM</p>
+<p class="uk-text-muted uk-text-small" style="text-align: center;">We serve the districts of Macedonia (Thessaloniki) and Attica (Athens). Our Mutual Consent Divorce service is provided countrywide.</p></div>
+
+</div>
+</div>
+<div class="uk-margin uk-text-center" uk-scrollspy="target: [uk-scrollspy-class];">    <ul class="uk-child-width-auto uk-grid-small uk-flex-inline uk-flex-middle" uk-grid>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.facebook.com/nomikosodigos" target="_blank"><span uk-icon="icon: facebook;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.linkedin.com/company/nomikosodigos" target="_blank"><span uk-icon="icon: linkedin;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.youtube.com/RozouAssociatesLawFirm" target="_blank"><span uk-icon="icon: youtube;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.instagram.com/nomikosodigos/" target="_blank"><span uk-icon="icon: instagram;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.instagram.com/nomikosodigos_global/" target="_blank"><span uk-icon="icon: instagram;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://twitter.com/nomikosodigos" target="_blank"><span uk-icon="icon: twitter;"></span></a></li>
+            <li class="el-item">
+<a class="el-link uk-icon-button" href="https://www.tiktok.com/@nomikosodigos" target="_blank"><span uk-icon="icon: tiktok;"></span></a></li>
+    
+    </ul></div>
+                
+            
+        
+    
+</div>
+<div class="uk-width-2-3@m">
+    
+        
+            
+            
+            
+                
+                    
+<nav class="uk-text-center">
+    
+        <ul class="uk-margin-remove-bottom uk-subnav uk-flex-center" uk-margin>                <li class="el-item ">
+<a class="el-link" href="/en/terms-of-use">
+        Terms of Use
+</a></li>
+                <li class="el-item ">
+<a class="el-link" href="/en/privacy-policy">
+        Privacy Policy
+</a></li>
+                <li class="el-item ">
+<a class="el-link" href="/en/cookies-policy">
+        Cookies Policy
+</a></li>
+                <li class="el-item ">
+<a class="el-link" href="/en/sitemap">
+        Site Map
+</a></li>
+                <li class="el-item ">
+<a class="el-link" href="/en/cooperation">
+        Cooperate with Us
+</a></li>
+                <li class="el-item ">
+<a class="el-link" href="/en/search">
+        Search this Site
+</a></li>
+                </ul>
+    
+</nav><hr>
+<div class="uk-panel">
+    
+    
+<div class="uk-margin-remove-last-child custom" ><div style="text-align: center; display: flex; justify-content: center; gap: 10px;">
+	<a href="/en/contact">
+		<button class="uk-button uk-button-default uk-margin-small-bottom uk-button-small">Contact</button>
+	</a>
+	<a href="tel:+302310280874">
+		<button class="uk-button uk-button-default uk-margin-small-bottom uk-button-small">Call Us Now</button>
+	</a>
+</div></div>
+
+</div>
+<div class="uk-panel">
+    
+    
+<div class="uk-margin-remove-last-child custom" ><p class="uk-text-muted uk-text-small" style="text-align: center;">
+	Copyright © 2008-<script>
+		document.write(new Date().getFullYear())
+	</script> Rozou and Associates Law Firm. Greek Trademarks: D201227 and N237725.
+</p></div>
+
+</div><div><!-- Google Tag Manager (noscript) --><noscript>
+	<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5K7SNF" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript><!-- End Google Tag Manager (noscript) --></div>
+                
+            
+        
+    
+</div>
+    
+</div>
+                                </div>                
+            
+        
+    
+</div>            </footer>
+            
+        </div>
+
+        
+        
+        
+
+    </body>
+</html>

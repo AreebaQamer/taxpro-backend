@@ -22,8 +22,8 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .formLogin(form -> form.disable())   // ✅ default login page band
-            .httpBasic(basic -> basic.disable()) // ✅ basic auth band
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             );
@@ -33,10 +33,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(
+            "http://localhost:3000",           // Local React dev
+            "http://localhost:5173",           // Vite React dev (agar Vite use kar rahe ho)
+            "https://sqamer.com",              // ✅ Tumhara live frontend domain
+            "https://www.sqamer.com",          // ✅ www wala bhi add karo
+            "https://taxpro-frontend.onrender.com"  // Agar Render pe frontend deploy kiya toh
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

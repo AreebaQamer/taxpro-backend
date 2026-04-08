@@ -29,7 +29,7 @@ public class SwaggerConfig {
                                 .url("http://springdoc.org")))
                 .servers(List.of(
                         new Server().url("http://localhost:8081").description("Local Development Server"),
-                        new Server().url("https://api.taxpro.com").description("Production Server")
+                        new Server().url("https://taxpro-backend-1.onrender.com").description("Production Server")
                 ));
     }
 }

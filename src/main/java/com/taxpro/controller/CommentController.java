@@ -58,7 +58,7 @@ class PublicCommentController {
 // ══════════════════════════════════════════════════════════════════════════════
 @RestController
 @RequestMapping("/api/admin/comments")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://sqamer.com", "https://www.sqamer.com"}, allowCredentials = "true")
 class AdminCommentController {
 
     @Autowired

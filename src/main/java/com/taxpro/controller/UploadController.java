@@ -1,12 +1,9 @@
 package com.taxpro.controller;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,9 +11,6 @@ import java.util.Map;
 @RequestMapping("/api")
 @CrossOrigin(origins = {"http://localhost:3000", "https://sqamer.com", "https://www.sqamer.com"}, allowCredentials = "true")
 public class UploadController {
-
-@Autowired(required = false)  // ← required=false karo
-    private Cloudinary cloudinary;
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> uploadFile(
@@ -36,15 +30,10 @@ public class UploadController {
         }
 
         try {
-            Map uploadResult = cloudinary.uploader().upload(
-                file.getBytes(),
-                ObjectUtils.asMap("folder", "sqamer-blogs")
-            );
-
-            String fileUrl = (String) uploadResult.get("secure_url");
-            response.put("url", fileUrl);
+            String base64 = Base64.getEncoder().encodeToString(file.getBytes());
+            String dataUrl = "data:" + contentType + ";base64," + base64;
+            response.put("url", dataUrl);
             return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             response.put("error", "Upload fail: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);

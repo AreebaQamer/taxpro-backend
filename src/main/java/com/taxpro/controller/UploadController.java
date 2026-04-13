@@ -15,7 +15,7 @@ import java.util.Map;
 @CrossOrigin(origins = {"http://localhost:3000", "https://sqamer.com", "https://www.sqamer.com"}, allowCredentials = "true")
 public class UploadController {
 
- @Autowired 
+@Autowired(required = false)  // ← required=false karo
     private Cloudinary cloudinary;
 
     @PostMapping("/upload")

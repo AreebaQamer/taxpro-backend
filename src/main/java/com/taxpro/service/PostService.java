@@ -17,18 +17,18 @@ public class PostService {
     private PostRepository postRepository;
 
     // Admin — sare posts (status filter ke saath)
-    public Page<Post> getAllPosts(String status, Pageable pageable) {
+  public Page<Post> getAllPosts(String status, Pageable pageable) {
     Page<Post> posts = status != null && !status.isEmpty()
-        ? postRepository.findByPostStatus(status, pageable)
-        : postRepository.findAll(pageable);
-    
-   posts.forEach(post -> {
-    String imageUrl = postRepository.findThumbnailByPostId(post.getId());
-    if (imageUrl != null) {
-        post.setGuid(imageUrl);  // postImage ki jagah guid mein set karo
-    }
-});
-    
+        ? postRepository.findByPostStatusAndPostType(status, "post", pageable)  // ← CHANGE
+        : postRepository.findByPostType("post", pageable);  // ← CHANGE
+
+    posts.forEach(post -> {
+        String imageUrl = postRepository.findThumbnailByPostId(post.getId());
+        if (imageUrl != null) {
+            post.setGuid(imageUrl);
+        }
+    });
+
     return posts;
 }
 
@@ -40,25 +40,18 @@ public class PostService {
    @Autowired
 private PostMetaService postMetaService;
 
-// Admin — create
-public Post createPost(Post post) {
-    if (post.getPostDate() == null) {
-        post.setPostDate(LocalDateTime.now());
+ public Post createPost(Post post) {
+        if (post.getPostDate() == null) {
+            post.setPostDate(LocalDateTime.now());
+        }
+        post.setPostModified(LocalDateTime.now());
+        if (post.getPostStatus() == null) {
+            post.setPostStatus("draft");
+        }
+        
+        // ✅ SIRF POST SAVE KARO - IMAGE MAT SAVE KARO
+        return postRepository.save(post);
     }
-    post.setPostModified(LocalDateTime.now());
-    if (post.getPostStatus() == null) {
-        post.setPostStatus("draft");
-    }
-    
-    Post saved = postRepository.save(post);
-    
-    // Image postmeta mein save karo
-    if (post.getPostImage() != null && !post.getPostImage().isEmpty()) {
-        postMetaService.saveThumbnail(saved.getId(), post.getPostImage());
-    }
-    
-    return saved;
-}
    public Post updatePost(Long id, Post updatedPost) {
     Post existing = postRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Post not found"));

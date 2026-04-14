@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.time.Instant;  
-
 
 @RestController
 @RequestMapping("/api/admin")
@@ -36,16 +34,8 @@ public class PostController {
         
         Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
         Page<Post> posts = postService.getAllPosts(status, pageable);
-  // Force fresh response
-      Instant lastModified = Instant.now(); // or get from posts if available
-
-    return ResponseEntity.ok()
-            .header("Cache-Control", "no-cache, no-store, must-revalidate")
-            .header("Pragma", "no-cache")
-            .header("Expires", "0")
-            .lastModified(lastModified)
-            .body(posts); 
- }
+        return ResponseEntity.ok(posts);
+    }
 
     @Operation(summary = "Get post by ID (Admin)")
     @GetMapping("/posts/{id}")

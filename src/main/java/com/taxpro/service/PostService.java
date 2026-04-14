@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-// ✅ ADD THIS MISSING IMPORT
-import com.taxpro.service.PostMetaService;
 
 @Service
 public class PostService {
@@ -18,31 +16,31 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    @Autowired
-    private PostMetaService postMetaService;  // Now import is added
-
     // Admin — sare posts (status filter ke saath)
-    public Page<Post> getAllPosts(String status, Pageable pageable) {
-        Page<Post> posts = status != null && !status.isEmpty()
-            ? postRepository.findByPostStatusAndPostType(status, "post", pageable)
-            : postRepository.findByPostType("post", pageable);
+  public Page<Post> getAllPosts(String status, Pageable pageable) {
+    Page<Post> posts = status != null && !status.isEmpty()
+        ? postRepository.findByPostStatusAndPostType(status, "post", pageable)  // ← CHANGE
+        : postRepository.findByPostType("post", pageable);  // ← CHANGE
 
-        posts.forEach(post -> {
-            String imageUrl = postRepository.findThumbnailByPostId(post.getId());
-            if (imageUrl != null) {
-                post.setGuid(imageUrl);
-            }
-        });
+    posts.forEach(post -> {
+        String imageUrl = postRepository.findThumbnailByPostId(post.getId());
+        if (imageUrl != null) {
+            post.setGuid(imageUrl);
+        }
+    });
 
-        return posts;
-    }
+    return posts;
+}
 
     // Admin — single post
     public Optional<Post> getPostById(Long id) {
         return postRepository.findById(id);
     }
 
-    public Post createPost(Post post) {
+   @Autowired
+private PostMetaService postMetaService;
+
+ public Post createPost(Post post) {
         if (post.getPostDate() == null) {
             post.setPostDate(LocalDateTime.now());
         }
@@ -54,25 +52,24 @@ public class PostService {
         // ✅ SIRF POST SAVE KARO - IMAGE MAT SAVE KARO
         return postRepository.save(post);
     }
+   public Post updatePost(Long id, Post updatedPost) {
+    Post existing = postRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
+    existing.setPostTitle(updatedPost.getPostTitle());
+    existing.setPostContent(updatedPost.getPostContent());
+    existing.setPostExcerpt(updatedPost.getPostExcerpt());
+    existing.setPostStatus(updatedPost.getPostStatus());
+    existing.setPostModified(LocalDateTime.now());
     
-    public Post updatePost(Long id, Post updatedPost) {
-        Post existing = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-        existing.setPostTitle(updatedPost.getPostTitle());
-        existing.setPostContent(updatedPost.getPostContent());
-        existing.setPostExcerpt(updatedPost.getPostExcerpt());
-        existing.setPostStatus(updatedPost.getPostStatus());
-        existing.setPostModified(LocalDateTime.now());
-        
-        Post saved = postRepository.save(existing);
-        
-        // Image update karo
-        if (updatedPost.getPostImage() != null && !updatedPost.getPostImage().isEmpty()) {
-            postMetaService.saveThumbnail(saved.getId(), updatedPost.getPostImage());
-        }
-        
-        return saved;
+    Post saved = postRepository.save(existing);
+    
+    // Image update karo
+    if (updatedPost.getPostImage() != null && !updatedPost.getPostImage().isEmpty()) {
+        postMetaService.saveThumbnail(saved.getId(), updatedPost.getPostImage());
     }
+    
+    return saved;
+}
 
     // Admin — delete
     public void deletePost(Long id) {
@@ -113,26 +110,24 @@ public class PostService {
         return postRepository.countByPostStatus("draft");
     }
 
-    public Page<Post> getPublishedPosts(Pageable pageable) {
-        return postRepository.findByPostStatus("publish", pageable);
-    }
+   public Page<Post> getPublishedPosts(Pageable pageable) {
+    return postRepository.findByPostStatus("publish", pageable);
+}
 
-    // Yeh method update karo
-    public Page<Post> getPublishedPostsBefore2026(Pageable pageable) {
-        LocalDateTime cutoff = LocalDateTime.of(2026, 1, 1, 0, 0);
-        return postRepository.findPublishedPostsBefore2026(cutoff, pageable);
-    }
-    
+  // Yeh method update karo
+public Page<Post> getPublishedPostsBefore2026(Pageable pageable) {
+    LocalDateTime cutoff = LocalDateTime.of(2026, 1, 1, 0, 0); // ✅ LocalDateTime pass karo
+    return postRepository.findPublishedPostsBefore2026(cutoff, pageable);
+}
     public Optional<Post> getPublishedPostById(Long id) {
         return postRepository.findPublishedPostById(id);
     }
-    
     // Add to PostService.java
-    public Page<Post> searchPosts(String keyword, String status, Pageable pageable) {
-        if (status != null && !status.isEmpty()) {
-            return postRepository.searchByKeywordAndStatus(keyword, status, pageable);
-        } else {
-            return postRepository.searchByKeyword(keyword, pageable);
-        }
+public Page<Post> searchPosts(String keyword, String status, Pageable pageable) {
+    if (status != null && !status.isEmpty()) {
+        return postRepository.searchByKeywordAndStatus(keyword, status, pageable);
+    } else {
+        return postRepository.searchByKeyword(keyword, pageable);
     }
+}
 }

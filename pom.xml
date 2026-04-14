@@ -35,8 +35,6 @@
             <optional>true</optional>
         </dependency>
         
-        <!-- REMOVED ALL CACHE DEPENDENCIES -->
-        
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -68,6 +66,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>  
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -98,6 +97,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.18.30</version>  <!-- ✅ ADD VERSION HERE -->
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

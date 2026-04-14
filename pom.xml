@@ -36,6 +36,31 @@
             <optional>true</optional>
         </dependency>
         
+        <!-- ===== PERFORMANCE DEPENDENCIES (ADD THESE) ===== -->
+        
+        <!-- 1. CACHE SUPPORT - Most Important -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        
+        <!-- 2. CAFFEINE CACHE - High performance cache -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        
+        <!-- 3. HikariCP Connection Pool (Already included, but ensure) -->
+        
+        <!-- 4. SPRING BOOT ACTUATOR - For monitoring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        
+        <!-- ===== EXISTING DEPENDENCIES ===== -->
+        
         <!-- Swagger/OpenAPI 3 Dependencies -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -71,7 +96,7 @@
             <scope>runtime</scope>
         </dependency>
         
-        <!-- PostgreSQL Driver - YEH ADD KIYA HAI -->
+        <!-- PostgreSQL Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -89,10 +114,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-    <groupId>com.cloudinary</groupId>
-    <artifactId>cloudinary-http44</artifactId>
-    <version>1.36.0</version>
-</dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.36.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -101,6 +126,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <optimize>true</optimize>  <!-- ADD THIS -->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

@@ -34,8 +34,14 @@ public class PostController {
         
         Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
         Page<Post> posts = postService.getAllPosts(status, pageable);
-        return ResponseEntity.ok(posts);
-    }
+  // Force fresh response
+    return ResponseEntity.ok()
+            .header("Cache-Control", "no-cache, no-store, must-revalidate")
+            .header("Pragma", "no-cache")
+            .header("Expires", "0")
+            .lastModified(lastModified.toInstant(ZoneOffset.UTC))
+            .body(posts); 
+               }
 
     @Operation(summary = "Get post by ID (Admin)")
     @GetMapping("/posts/{id}")

@@ -27,25 +27,23 @@ public class PostController {
 
     @Operation(summary = "Get all posts (Admin)", description = "Returns all posts including drafts")
     @GetMapping("/posts")
-   @GetMapping("/posts")
-public ResponseEntity<Page<Post>> getAllPosts(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(required = false) String status) {
-    
-    Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
-    Page<Post> posts = postService.getAllPosts(status, pageable);
-    
-    // FIXED: Create lastModified variable
-    Instant lastModified = Instant.now(); // or get from posts if available
-    
+    public ResponseEntity<Page<Post>> getAllPosts(
+            @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Filter by status") @RequestParam(required = false) String status) {
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
+        Page<Post> posts = postService.getAllPosts(status, pageable);
+  // Force fresh response
+      Instant lastModified = Instant.now(); // or get from posts if available
+
     return ResponseEntity.ok()
             .header("Cache-Control", "no-cache, no-store, must-revalidate")
             .header("Pragma", "no-cache")
             .header("Expires", "0")
             .lastModified(lastModified)
-            .body(posts);
-}
+            .body(posts); 
+ }
 
     @Operation(summary = "Get post by ID (Admin)")
     @GetMapping("/posts/{id}")

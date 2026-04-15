@@ -46,9 +46,8 @@ public class PostController {
     }
 
     @Operation(summary = "Create new post")
-   @PostMapping("/posts")
 @PostMapping("/posts")
-public ResponseEntity<?> createPost(@RequestBody Post post) {
+public ResponseEntity<Post> createPost(@RequestBody Post post) {
     try {
         System.out.println("========== CREATE POST CONTROLLER ==========");
         System.out.println("Received request to create post");

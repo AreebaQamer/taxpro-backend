@@ -39,28 +39,44 @@ public class PostService {
 
    @Autowired
 private PostMetaService postMetaService;
-
 public Post createPost(Post post) {
-    if (post.getPostDate() == null) {
-        post.setPostDate(LocalDateTime.now());
+    try {
+        System.out.println("=== CREATE POST START ===");
+        System.out.println("Title: " + post.getPostTitle());
+        
+        if (post.getPostDate() == null) {
+            post.setPostDate(LocalDateTime.now());
+        }
+        post.setPostModified(LocalDateTime.now());
+        if (post.getPostStatus() == null) {
+            post.setPostStatus("draft");
+        }
+        if (post.getPostType() == null) {
+            post.setPostType("post");
+        }
+        
+        // First save the post to get an ID
+        Post saved = postRepository.save(post);
+        System.out.println("Post saved with ID: " + saved.getId());
+        
+        // Save the image if provided
+        if (post.getPostImage() != null && !post.getPostImage().isEmpty()) {
+            System.out.println("Image length: " + post.getPostImage().length());
+            System.out.println("Saving thumbnail...");
+            postMetaService.saveThumbnail(saved.getId(), post.getPostImage());
+            System.out.println("Thumbnail saved successfully");
+        } else {
+            System.out.println("No image to save");
+        }
+        
+        System.out.println("=== CREATE POST END ===");
+        return saved;
+        
+    } catch (Exception e) {
+        System.err.println("ERROR in createPost: " + e.getMessage());
+        e.printStackTrace();
+        throw e;
     }
-    post.setPostModified(LocalDateTime.now());
-    if (post.getPostStatus() == null) {
-        post.setPostStatus("draft");
-    }
-    if (post.getPostType() == null) {
-        post.setPostType("post");
-    }
-    
-    // First save the post to get an ID
-    Post saved = postRepository.save(post);
-    
-    // ✅ ADD THIS - Save the image if provided
-    if (post.getPostImage() != null && !post.getPostImage().isEmpty()) {
-        postMetaService.saveThumbnail(saved.getId(), post.getPostImage());
-    }
-    
-    return saved;
 }
    public Post updatePost(Long id, Post updatedPost) {
     Post existing = postRepository.findById(id)

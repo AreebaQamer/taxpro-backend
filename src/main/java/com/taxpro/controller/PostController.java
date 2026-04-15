@@ -46,33 +46,13 @@ public class PostController {
     }
 
     @Operation(summary = "Create new post")
-@PostMapping("/posts")
-public ResponseEntity<Post> createPost(@RequestBody Post post) {
-    try {
-        System.out.println("========== CREATE POST CONTROLLER ==========");
-        System.out.println("Received request to create post");
-        System.out.println("Post Title: " + post.getPostTitle());
-        System.out.println("Post Content: " + (post.getPostContent() != null ? post.getPostContent().substring(0, Math.min(50, post.getPostContent().length())) : "null"));
-        
+    @PostMapping("/posts")  // ← Make sure this is line 50 and there's only ONE @PostMapping
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        System.out.println("postImage received: " + post.getPostImage());
+        System.out.println("guid received: " + post.getGuid());
         Post savedPost = postService.createPost(post);
-        
-        System.out.println("Post created with ID: " + savedPost.getId());
-        System.out.println("===========================================");
-        
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
-        
-    } catch (Exception e) {
-        System.err.println("❌ Error in createPost controller: " + e.getMessage());
-        e.printStackTrace();
-        
-        // Return detailed error
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", e.getMessage());
-        errorResponse.put("type", e.getClass().getSimpleName());
-        
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
-}
 
     @Operation(summary = "Update post")
     @PutMapping("/posts/{id}")
@@ -117,25 +97,26 @@ public ResponseEntity<Post> createPost(@RequestBody Post post) {
             return ResponseEntity.notFound().build();
         }
     }
-@GetMapping("/stats")
-public ResponseEntity<Map<String, Long>> getStats() {
-    Map<String, Long> stats = new HashMap<>();
-    stats.put("total", postService.getTotalCount());
-    stats.put("published", postService.getPublishedCount());
-    stats.put("drafts", postService.getDraftCount());
-    return ResponseEntity.ok(stats);
-}
-  // Add this to your PostController.java
-@Operation(summary = "Search posts (Admin)")
-@GetMapping("/posts/search")
-public ResponseEntity<Page<Post>> searchPosts(
-        @RequestParam String keyword,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestParam(required = false) String status) {
-    
-    Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
-    Page<Post> posts = postService.searchPosts(keyword, status, pageable);
-    return ResponseEntity.ok(posts);
-}
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Long>> getStats() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("total", postService.getTotalCount());
+        stats.put("published", postService.getPublishedCount());
+        stats.put("drafts", postService.getDraftCount());
+        return ResponseEntity.ok(stats);
+    }
+
+    @Operation(summary = "Search posts (Admin)")
+    @GetMapping("/posts/search")
+    public ResponseEntity<Page<Post>> searchPosts(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String status) {
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
+        Page<Post> posts = postService.searchPosts(keyword, status, pageable);
+        return ResponseEntity.ok(posts);
+    }
 }

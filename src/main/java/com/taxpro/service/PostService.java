@@ -16,19 +16,27 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    // Admin — sare posts (status filter ke saath)
-  public Page<Post> getAllPosts(String status, Pageable pageable) {
-    Page<Post> posts = status != null && !status.isEmpty()
-        ? postRepository.findByPostStatusAndPostType(status, "post", pageable)  // ← CHANGE
-        : postRepository.findByPostType("post", pageable);  // ← CHANGE
-
+ public Page<Post> getAllPosts(String status, Pageable pageable) {
+    Page<Post> posts;
+    
+    if (status != null && !status.isEmpty()) {
+        // Filter by status only (postType is always "post" in your entity default)
+        posts = postRepository.findByPostStatus(status, pageable);
+    } else {
+        // Get all posts (no status filter)
+        posts = postRepository.findAll(pageable);
+    }
+    
+    // Filter by postType = "post" if needed (since your entity has default "post")
+    // But since your entity defaults to "post", you might not need explicit filtering
+    
     posts.forEach(post -> {
         String imageUrl = postRepository.findThumbnailByPostId(post.getId());
         if (imageUrl != null) {
             post.setGuid(imageUrl);
         }
     });
-
+    
     return posts;
 }
 

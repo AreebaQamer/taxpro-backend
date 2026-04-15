@@ -31,11 +31,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         @org.springframework.data.repository.query.Param("id") Long id
     );
 
-@Query(value = "SELECT CONCAT('https://sqamer.com/wp-content/uploads/', pm.meta_value) " +
-       "FROM wppw_postmeta pm " +
-       "WHERE pm.post_id = :postId AND pm.meta_key = '_wp_attached_file' LIMIT 1",
-       nativeQuery = true)
-    String findThumbnailByPostId(@Param("postId") Long postId);
+// ✅ CORRECT - This looks for your saved base64 images
+@Query("SELECT pm.metaValue FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = '_thumbnail_url'")
+String findThumbnailByPostId(@Param("postId") Long postId);
 // Add to PostRepository.java
 @Query("SELECT p FROM Post p WHERE " +
        "LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
@@ -51,4 +49,6 @@ Page<Post> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword, 
                                      @Param("status") String status, 
                                      Pageable pageable);
+ Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
+Page<Post> findByPostType(String postType, Pageable pageable);
 }

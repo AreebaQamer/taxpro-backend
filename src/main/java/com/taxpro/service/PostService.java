@@ -16,27 +16,19 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
- public Page<Post> getAllPosts(String status, Pageable pageable) {
-    Page<Post> posts;
-    
-    if (status != null && !status.isEmpty()) {
-        // Filter by status only (postType is always "post" in your entity default)
-        posts = postRepository.findByPostStatus(status, pageable);
-    } else {
-        // Get all posts (no status filter)
-        posts = postRepository.findAll(pageable);
-    }
-    
-    // Filter by postType = "post" if needed (since your entity has default "post")
-    // But since your entity defaults to "post", you might not need explicit filtering
-    
+    // Admin — sare posts (status filter ke saath)
+  public Page<Post> getAllPosts(String status, Pageable pageable) {
+    Page<Post> posts = status != null && !status.isEmpty()
+        ? postRepository.findByPostStatusAndPostType(status, "post", pageable)  // ← CHANGE
+        : postRepository.findByPostType("post", pageable);  // ← CHANGE
+
     posts.forEach(post -> {
         String imageUrl = postRepository.findThumbnailByPostId(post.getId());
         if (imageUrl != null) {
             post.setGuid(imageUrl);
         }
     });
-    
+
     return posts;
 }
 
@@ -48,18 +40,28 @@ public class PostService {
    @Autowired
 private PostMetaService postMetaService;
 
- public Post createPost(Post post) {
-        if (post.getPostDate() == null) {
-            post.setPostDate(LocalDateTime.now());
-        }
-        post.setPostModified(LocalDateTime.now());
-        if (post.getPostStatus() == null) {
-            post.setPostStatus("draft");
-        }
-        
-        // ✅ SIRF POST SAVE KARO - IMAGE MAT SAVE KARO
-        return postRepository.save(post);
+public Post createPost(Post post) {
+    if (post.getPostDate() == null) {
+        post.setPostDate(LocalDateTime.now());
     }
+    post.setPostModified(LocalDateTime.now());
+    if (post.getPostStatus() == null) {
+        post.setPostStatus("draft");
+    }
+    if (post.getPostType() == null) {
+        post.setPostType("post");
+    }
+    
+    // First save the post to get an ID
+    Post saved = postRepository.save(post);
+    
+    // ✅ ADD THIS - Save the image if provided
+    if (post.getPostImage() != null && !post.getPostImage().isEmpty()) {
+        postMetaService.saveThumbnail(saved.getId(), post.getPostImage());
+    }
+    
+    return saved;
+}
    public Post updatePost(Long id, Post updatedPost) {
     Post existing = postRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Post not found"));

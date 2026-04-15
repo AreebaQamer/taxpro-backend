@@ -40,18 +40,66 @@ public class PostService {
    @Autowired
 private PostMetaService postMetaService;
 
- public Post createPost(Post post) {
+public Post createPost(Post post) {
+    try {
+        System.out.println("========== CREATE POST SERVICE START ==========");
+        System.out.println("Received Post Title: " + post.getPostTitle());
+        System.out.println("Post Content Length: " + (post.getPostContent() != null ? post.getPostContent().length() : 0));
+        System.out.println("Post Status: " + post.getPostStatus());
+        System.out.println("Post Author: " + post.getPostAuthor());
+        System.out.println("Post Type: " + post.getPostType());
+        
+        // Set default values
         if (post.getPostDate() == null) {
             post.setPostDate(LocalDateTime.now());
-        }
-        post.setPostModified(LocalDateTime.now());
-        if (post.getPostStatus() == null) {
-            post.setPostStatus("draft");
+            System.out.println("Set postDate: " + post.getPostDate());
         }
         
-        // ✅ SIRF POST SAVE KARO - IMAGE MAT SAVE KARO
-        return postRepository.save(post);
+        post.setPostModified(LocalDateTime.now());
+        System.out.println("Set postModified: " + post.getPostModified());
+        
+        if (post.getPostStatus() == null) {
+            post.setPostStatus("draft");
+            System.out.println("Set default status: draft");
+        }
+        
+        if (post.getPostType() == null) {
+            post.setPostType("post");
+            System.out.println("Set default postType: post");
+        }
+        
+        if (post.getPostAuthor() == null) {
+            post.setPostAuthor(1L);
+            System.out.println("Set default author: 1");
+        }
+        
+        // Set all other fields to prevent null values
+        if (post.getToPing() == null) post.setToPing("");
+        if (post.getPinged() == null) post.setPinged("");
+        if (post.getPostContentFiltered() == null) post.setPostContentFiltered("");
+        if (post.getCommentStatus() == null) post.setCommentStatus("open");
+        if (post.getPingStatus() == null) post.setPingStatus("open");
+        if (post.getCommentCount() == null) post.setCommentCount(0L);
+        if (post.getMenuOrder() == null) post.setMenuOrder(0);
+        if (post.getPostMimeType() == null) post.setPostMimeType("");
+        if (post.getPostName() == null) post.setPostName("");
+        if (post.getPostPassword() == null) post.setPostPassword("");
+        if (post.getPostParent() == null) post.setPostParent(0L);
+        if (post.getGuid() == null) post.setGuid("");
+        
+        System.out.println("Attempting to save post to database...");
+        Post saved = postRepository.save(post);
+        System.out.println("✅ Post saved successfully with ID: " + saved.getId());
+        System.out.println("========== CREATE POST SERVICE END ==========");
+        
+        return saved;
+        
+    } catch (Exception e) {
+        System.err.println("❌ ERROR in createPost: " + e.getMessage());
+        e.printStackTrace();
+        throw new RuntimeException("Failed to create post: " + e.getMessage(), e);
     }
+}
    public Post updatePost(Long id, Post updatedPost) {
     Post existing = postRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Post not found"));

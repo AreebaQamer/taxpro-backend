@@ -15,10 +15,10 @@ public class ContactService {
     private ContactRepository contactRepository;
     
     // ================================================
-    // BASIC METHODS
+    // METHODS WITHOUT PAGINATION (For ContactController)
     // ================================================
     
-    public List<Contact> getAllContactsList() {
+    public List<Contact> getAllContacts() {
         return contactRepository.findAll();
     }
     
@@ -36,7 +36,7 @@ public class ContactService {
     }
     
     // ================================================
-    // METHODS WITH PAGINATION
+    // METHODS WITH PAGINATION (For AdminContactController)
     // ================================================
     
     public Page<Contact> getAllContacts(Pageable pageable) {

@@ -9,4 +9,10 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     List<Contact> findByServiceType(String serviceType);
     List<Contact> findByEmail(String email);
+     // Methods for pagination and filtering
+    Page<Contact> findByIsReadFalse(Pageable pageable);
+    
+    Page<Contact> findByIsReadTrue(Pageable pageable);
+    
+    long countByIsReadFalse();
 }

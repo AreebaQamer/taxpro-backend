@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +24,12 @@ public class NewsController {
     // PUBLIC ENDPOINTS
     // ================================================
     
-    // Get trending news (top 5 by views) - FOR SIDEBAR
     @GetMapping("/news/trending")
     public ResponseEntity<List<NewsDTO>> getTrendingNews() {
         List<NewsDTO> trendingNews = newsService.getTrendingNews();
         return ResponseEntity.ok(trendingNews);
     }
     
-    // Get all published news with pagination
     @GetMapping("/news")
     public ResponseEntity<Map<String, Object>> getAllPublishedNews(
             @RequestParam(defaultValue = "0") int page,
@@ -48,7 +46,6 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
     
-    // Get single news by ID (increments view count)
     @GetMapping("/news/{id}")
     public ResponseEntity<NewsDTO> getNewsById(@PathVariable Long id) {
         NewsDTO news = newsService.getNewsById(id);
@@ -56,16 +53,14 @@ public class NewsController {
     }
     
     // ================================================
-    // ADMIN ENDPOINTS (require authentication)
+    // ADMIN ENDPOINTS
     // ================================================
     
-    // Create news
     @PostMapping("/admin/news")
     public ResponseEntity<NewsDTO> createNews(
             @RequestBody NewsDTO newsDTO,
             HttpServletRequest request) {
         
-        // Get admin name from token (you can implement your auth logic)
         String adminName = (String) request.getAttribute("adminName");
         if (adminName == null) adminName = "Admin";
         
@@ -73,7 +68,6 @@ public class NewsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNews);
     }
     
-    // Update news
     @PutMapping("/admin/news/{id}")
     public ResponseEntity<NewsDTO> updateNews(
             @PathVariable Long id,
@@ -82,7 +76,6 @@ public class NewsController {
         return ResponseEntity.ok(updatedNews);
     }
     
-    // Delete news
     @DeleteMapping("/admin/news/{id}")
     public ResponseEntity<Map<String, String>> deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);
@@ -91,7 +84,6 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
     
-    // Get all news for admin (including drafts)
     @GetMapping("/admin/news")
     public ResponseEntity<Map<String, Object>> getAllNewsForAdmin(
             @RequestParam(defaultValue = "0") int page,

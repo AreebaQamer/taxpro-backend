@@ -19,7 +19,6 @@ public class NewsService {
     @Autowired
     private NewsRepository newsRepository;
     
-    // Convert Entity to DTO
     private NewsDTO convertToDTO(News news) {
         NewsDTO dto = new NewsDTO();
         dto.setId(news.getId());
@@ -34,7 +33,6 @@ public class NewsService {
         return dto;
     }
     
-    // Convert DTO to Entity
     private News convertToEntity(NewsDTO dto) {
         News news = new News();
         news.setTitle(dto.getTitle());
@@ -46,44 +44,35 @@ public class NewsService {
         return news;
     }
     
-    // Get trending news (top 5 by views) - for sidebar
     public List<NewsDTO> getTrendingNews() {
         List<News> newsList = newsRepository.findTop5ByStatusOrderByViewsDescCreatedAtDesc("published");
         return newsList.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
     
-    // Get all published news with pagination
     public Page<NewsDTO> getAllPublishedNews(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<News> newsPage = newsRepository.findByStatus("published", pageable);
         return newsPage.map(this::convertToDTO);
     }
     
-    // Get single news by ID (increment views)
     @Transactional
     public NewsDTO getNewsById(Long id) {
         News news = newsRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
-        
-        // Increment views
         news.setViews(news.getViews() + 1);
         newsRepository.save(news);
-        
         return convertToDTO(news);
     }
     
-    // Create news (Admin only)
     public NewsDTO createNews(NewsDTO newsDTO, String adminName) {
         News news = convertToEntity(newsDTO);
         news.setAuthor(adminName != null ? adminName : "Admin");
         news.setStatus(newsDTO.getStatus() != null ? newsDTO.getStatus() : "published");
         news.setViews(0);
-        
         News savedNews = newsRepository.save(news);
         return convertToDTO(savedNews);
     }
     
-    // Update news (Admin only)
     public NewsDTO updateNews(Long id, NewsDTO newsDTO) {
         News news = newsRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
@@ -97,15 +86,13 @@ public class NewsService {
         return convertToDTO(updatedNews);
     }
     
-    // Delete news (Admin only)
     public void deleteNews(Long id) {
         newsRepository.deleteById(id);
     }
     
-    // Get all news for admin (with pagination)
     public Page<NewsDTO> getAllNewsForAdmin(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<News> newsPage = newsRepository.findAllByOrderByCreatedAtDesc(pageable);
+        Page<News> newsPage = newsRepository.findAll(pageable);
         return newsPage.map(this::convertToDTO);
     }
 }

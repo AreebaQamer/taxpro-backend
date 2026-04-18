@@ -36,7 +36,7 @@ public class ContactService {
     }
     
     // ================================================
-    // METHODS WITH PAGINATION (Called by AdminContactController)
+    // METHODS WITH PAGINATION
     // ================================================
     
     public Page<Contact> getAllContacts(Pageable pageable) {

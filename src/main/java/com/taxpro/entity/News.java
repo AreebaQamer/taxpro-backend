@@ -1,6 +1,6 @@
 package com.taxpro.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

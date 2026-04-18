@@ -1,6 +1,6 @@
 package com.taxpro.controller;
 
-import com.taxpro.dto.NewsDTO;
+import com.taxpro.entity.News;
 import com.taxpro.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +25,8 @@ public class NewsController {
     // ================================================
     
     @GetMapping("/news/trending")
-    public ResponseEntity<List<NewsDTO>> getTrendingNews() {
-        List<NewsDTO> trendingNews = newsService.getTrendingNews();
+    public ResponseEntity<List<News>> getTrendingNews() {
+        List<News> trendingNews = newsService.getTrendingNews();
         return ResponseEntity.ok(trendingNews);
     }
     
@@ -35,7 +35,7 @@ public class NewsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         
-        Page<NewsDTO> newsPage = newsService.getAllPublishedNews(page, size);
+        Page<News> newsPage = newsService.getAllPublishedNews(page, size);
         
         Map<String, Object> response = new HashMap<>();
         response.put("content", newsPage.getContent());
@@ -47,8 +47,8 @@ public class NewsController {
     }
     
     @GetMapping("/news/{id}")
-    public ResponseEntity<NewsDTO> getNewsById(@PathVariable Long id) {
-        NewsDTO news = newsService.getNewsById(id);
+    public ResponseEntity<News> getNewsById(@PathVariable Long id) {
+        News news = newsService.getNewsById(id);
         return ResponseEntity.ok(news);
     }
     
@@ -57,22 +57,22 @@ public class NewsController {
     // ================================================
     
     @PostMapping("/admin/news")
-    public ResponseEntity<NewsDTO> createNews(
-            @RequestBody NewsDTO newsDTO,
+    public ResponseEntity<News> createNews(
+            @RequestBody News news,
             HttpServletRequest request) {
         
         String adminName = (String) request.getAttribute("adminName");
         if (adminName == null) adminName = "Admin";
         
-        NewsDTO createdNews = newsService.createNews(newsDTO, adminName);
+        News createdNews = newsService.createNews(news, adminName);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdNews);
     }
     
     @PutMapping("/admin/news/{id}")
-    public ResponseEntity<NewsDTO> updateNews(
+    public ResponseEntity<News> updateNews(
             @PathVariable Long id,
-            @RequestBody NewsDTO newsDTO) {
-        NewsDTO updatedNews = newsService.updateNews(id, newsDTO);
+            @RequestBody News news) {
+        News updatedNews = newsService.updateNews(id, news);
         return ResponseEntity.ok(updatedNews);
     }
     
@@ -89,7 +89,7 @@ public class NewsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         
-        Page<NewsDTO> newsPage = newsService.getAllNewsForAdmin(page, size);
+        Page<News> newsPage = newsService.getAllNewsForAdmin(page, size);
         
         Map<String, Object> response = new HashMap<>();
         response.put("content", newsPage.getContent());

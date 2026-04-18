@@ -22,7 +22,7 @@ public class News {
     
     private String author;
     
-    private String status = "published"; // published, draft
+    private String status = "published";
     
     private Integer views = 0;
     
@@ -32,18 +32,7 @@ public class News {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
-    // Constructors
     public News() {}
-    
-    public News(String title, String content, String image, String author, String status) {
-        this.title = title;
-        this.content = content;
-        this.image = image;
-        this.author = author;
-        this.status = status;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
     
     // Getters and Setters
     public Long getId() { return id; }

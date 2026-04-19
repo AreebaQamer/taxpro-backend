@@ -22,9 +22,6 @@ public class Contact {
     @Column(length = 1000)
     private String message;
     
-    @Column(name = "is_read")
-    private boolean isRead = false;
-    
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     

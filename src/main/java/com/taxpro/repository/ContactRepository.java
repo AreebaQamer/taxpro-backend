@@ -16,16 +16,5 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     // Find by email
     List<Contact> findByEmail(String email);
     
-    // ================================================
-    // METHODS FOR PAGINATION (For Admin Panel)
-    // ================================================
     
-    // Get unread contacts with pagination
-    Page<Contact> findByIsReadFalse(Pageable pageable);
-    
-    // Get read contacts with pagination
-    Page<Contact> findByIsReadTrue(Pageable pageable);
-    
-    // Count unread contacts
-    long countByIsReadFalse();
 }

@@ -1,8 +1,8 @@
 package com.taxpro.repository;
 
 import com.taxpro.entity.Contact;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;        // ✅ ADD THIS
+import org.springframework.data.domain.Pageable;  // ✅ ADD THIS
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

@@ -6,64 +6,87 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/contacts")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminContactController {
-
+    
     @Autowired
     private ContactService contactService;
-
+    
     @GetMapping
-    public ResponseEntity<Page<Contact>> getAllContacts(
+    public ResponseEntity<Map<String, Object>> getAllContacts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(contactService.getAllContacts(pageable));
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Contact> contacts = contactService.getAllContacts(pageable);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", contacts.getContent());
+        response.put("totalElements", contacts.getTotalElements());
+        response.put("totalPages", contacts.getTotalPages());
+        response.put("currentPage", contacts.getNumber());
+        
+        return ResponseEntity.ok(response);
     }
-
+    
     @GetMapping("/unread")
-    public ResponseEntity<Page<Contact>> getUnreadContacts(
+    public ResponseEntity<Map<String, Object>> getUnreadContacts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(contactService.getUnreadContacts(pageable));
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Contact> contacts = contactService.getUnreadContacts(pageable);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", contacts.getContent());
+        response.put("totalElements", contacts.getTotalElements());
+        response.put("totalPages", contacts.getTotalPages());
+        response.put("currentPage", contacts.getNumber());
+        
+        return ResponseEntity.ok(response);
     }
-
+    
     @GetMapping("/read")
-    public ResponseEntity<Page<Contact>> getReadContacts(
+    public ResponseEntity<Map<String, Object>> getReadContacts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "15") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(contactService.getReadContacts(pageable));
+        
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Contact> contacts = contactService.getReadContacts(pageable);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", contacts.getContent());
+        response.put("totalElements", contacts.getTotalElements());
+        response.put("totalPages", contacts.getTotalPages());
+        response.put("currentPage", contacts.getNumber());
+        
+        return ResponseEntity.ok(response);
     }
-
+    
     @GetMapping("/unread/count")
     public ResponseEntity<Map<String, Long>> getUnreadCount() {
         Map<String, Long> response = new HashMap<>();
         response.put("count", contactService.getUnreadCount());
         return ResponseEntity.ok(response);
     }
-
+    
     @PatchMapping("/{id}/read")
     public ResponseEntity<Contact> markAsRead(@PathVariable Long id) {
-        return ResponseEntity.ok(contactService.markAsRead(id));
+        Contact contact = contactService.markAsRead(id);
+        return ResponseEntity.ok(contact);
     }
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Contact> getContactById(@PathVariable Long id) {
-        return ResponseEntity.ok(contactService.getContactById(id));
     }
 }

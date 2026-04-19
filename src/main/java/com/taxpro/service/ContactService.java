@@ -3,8 +3,8 @@ package com.taxpro.service;
 import com.taxpro.entity.Contact;
 import com.taxpro.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;        // ✅ ADD THIS
+import org.springframework.data.domain.Pageable;  // ✅ ADD THIS
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -15,10 +15,10 @@ public class ContactService {
     private ContactRepository contactRepository;
     
     // ================================================
-    // METHODS WITHOUT PAGINATION (For ContactController)
+    // BASIC METHODS (No Pagination)
     // ================================================
     
-    public List<Contact> getAllContacts() {
+    public List<Contact> getAllContactsList() {
         return contactRepository.findAll();
     }
     
@@ -36,7 +36,7 @@ public class ContactService {
     }
     
     // ================================================
-    // METHODS WITH PAGINATION (For AdminContactController)
+    // METHODS WITH PAGINATION
     // ================================================
     
     public Page<Contact> getAllContacts(Pageable pageable) {

@@ -48,10 +48,7 @@ public class Contact {
     
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
-    
-    public boolean isRead() { return isRead; }
-    public void setRead(boolean read) { isRead = read; }  // ✅ ADD THIS METHOD
-    
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     

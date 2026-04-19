@@ -43,22 +43,5 @@ public class ContactService {
         return contactRepository.findAll(pageable);
     }
     
-    public Page<Contact> getUnreadContacts(Pageable pageable) {
-        return contactRepository.findByIsReadFalse(pageable);
-    }
-    
-    public Page<Contact> getReadContacts(Pageable pageable) {
-        return contactRepository.findByIsReadTrue(pageable);
-    }
-    
-    public long getUnreadCount() {
-        return contactRepository.countByIsReadFalse();
-    }
-    
-    public Contact markAsRead(Long id) {
-        Contact contact = contactRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
-        contact.setRead(true);
-        return contactRepository.save(contact);
-    }
+   
 }

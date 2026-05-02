@@ -51,6 +51,4 @@ Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword,
                                      Pageable pageable);
  Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
 Page<Post> findByPostType(String postType, Pageable pageable);
-Page<Post> findByPostStatusAndPostCategoryAndPostType(String status, String category, String postType, Pageable pageable);
-Page<Post> findByPostCategoryAndPostType(String category, String postType, Pageable pageable);
 }

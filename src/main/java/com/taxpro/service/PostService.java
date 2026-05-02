@@ -137,4 +137,12 @@ public Page<Post> searchPosts(String keyword, String status, Pageable pageable) 
         return postRepository.searchByKeyword(keyword, pageable);
     }
 }
+// PostService.java mein add karein
+public Page<Post> getPostsByCategory(String category, String status, Pageable pageable) {
+    if (status != null && !status.isEmpty()) {
+        return postRepository.findByPostStatusAndPostCategoryAndPostType(status, category, "post", pageable);
+    } else {
+        return postRepository.findByPostCategoryAndPostType(category, "post", pageable);
+    }
+}
 }

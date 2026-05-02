@@ -86,6 +86,12 @@ private String postPassword = "";
 
 @Column(name = "post_parent")
 private Long postParent = 0L;
+// Post.java mein yeh field add karein
+@Column(name = "post_category")
+@Schema(description = "Post category", example = "tax, legal, corporate, immigration")
+private String postCategory;
+
+
     
     // Constructors
     public Post() {}
@@ -175,6 +181,14 @@ private Long postParent = 0L;
         this.postAuthor = postAuthor;
     }
 
+// Getter and Setter
+public String getPostCategory() {
+    return postCategory;
+}
+
+public void setPostCategory(String postCategory) {
+    this.postCategory = postCategory;
+}
 public String getToPing() { return toPing; }
 public void setToPing(String toPing) { this.toPing = toPing; }
 

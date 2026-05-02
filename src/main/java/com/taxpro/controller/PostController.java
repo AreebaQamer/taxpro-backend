@@ -119,4 +119,15 @@ public class PostController {
         Page<Post> posts = postService.searchPosts(keyword, status, pageable);
         return ResponseEntity.ok(posts);
     }
+    // PostController.java mein add karein
+@GetMapping("/posts/category/{category}")
+public ResponseEntity<Page<Post>> getPostsByCategory(
+        @PathVariable String category,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size) {
+    
+    Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
+    Page<Post> posts = postService.getPostsByCategory(category, "publish", pageable);
+    return ResponseEntity.ok(posts);
+}
 }

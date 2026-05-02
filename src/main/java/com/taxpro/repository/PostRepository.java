@@ -51,4 +51,6 @@ Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword,
                                      Pageable pageable);
  Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
 Page<Post> findByPostType(String postType, Pageable pageable);
+boolean existsById(Long id);
+
 }

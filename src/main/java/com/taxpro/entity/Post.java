@@ -5,6 +5,8 @@ package com.taxpro.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;  // ← ADD THIS
+import java.util.Set;      // ← ADD THIS
 
 @Entity
 @Table(name = "wppw_posts")
@@ -217,4 +219,27 @@ public String getPostImage() {
 public void setPostImage(String postImage) {
     this.postImage = postImage;
 }
+// Post.java
+
+// Database column - jo aapne pehle fill kiya tha
+@Column(name = "postCategory")
+private String postCategory;
+
+// Transient - junction table se aane wali categories ke liye
+@Transient
+private String categoryName;
+
+// Junction table relationship
+@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+private Set<PostCategory> postCategories = new HashSet<>();
+
+// Getters and Setters
+public String getPostCategory() { return postCategory; }
+public void setPostCategory(String postCategory) { this.postCategory = postCategory; }
+
+public String getCategoryName() { return categoryName; }
+public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+public Set<PostCategory> getPostCategories() { return postCategories; }
+public void setPostCategories(Set<PostCategory> postCategories) { this.postCategories = postCategories; }
 }

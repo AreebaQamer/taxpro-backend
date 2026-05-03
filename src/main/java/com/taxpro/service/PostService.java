@@ -137,4 +137,7 @@ public Page<Post> searchPosts(String keyword, String status, Pageable pageable) 
         return postRepository.searchByKeyword(keyword, pageable);
     }
 }
+public Page<Post> getPostsByStatus(String status, Pageable pageable) {
+    return postRepository.findByPostStatus(status, pageable);
+}
 }

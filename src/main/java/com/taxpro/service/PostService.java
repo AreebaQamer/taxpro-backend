@@ -137,9 +137,4 @@ public Page<Post> searchPosts(String keyword, String status, Pageable pageable) 
         return postRepository.searchByKeyword(keyword, pageable);
     }
 }
-// PostService.java mein yeh method add karein
-public Page<Post> getPostsByStatus(String status, Pageable pageable) {
-    return postRepository.findByPostStatus(status, pageable);
-}
-
 }

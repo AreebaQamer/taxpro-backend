@@ -21,19 +21,12 @@ public class PostBlogController {
     @GetMapping("/posts")
     public ResponseEntity<Page<Post>> getPublishedPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String status) {  // ← ADD THIS
+            @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
 
-        Page<Post> posts;
-        if (status != null && !status.isEmpty()) {
-            // Agar status parameter hai toh filter karo
-            posts = postService.getPostsByStatus(status, pageable);
-        } else {
-            // Warna sirf published posts
-            posts = postService.getPublishedPosts(pageable);
-        }
+        // ✅ Sari published posts — koi date filter nahi
+        Page<Post> posts = postService.getPublishedPosts(pageable);
 
         return ResponseEntity.ok(posts);
     }

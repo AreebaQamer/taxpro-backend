@@ -2,8 +2,10 @@ package com.taxpro.repository;
 
 import com.taxpro.entity.PostMeta;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface PostMetaRepository extends JpaRepository<PostMeta, Long> {
@@ -15,4 +17,10 @@ public interface PostMetaRepository extends JpaRepository<PostMeta, Long> {
     
     @Query("SELECT pm FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = '_thumbnail_url'")
     Optional<PostMeta> findThumbnailMetaByPostId(@Param("postId") Long postId);
+    
+    // ✅ Add this method for deletion
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = :metaKey")
+    void deleteByPostIdAndMetaKey(@Param("postId") Long postId, @Param("metaKey") String metaKey);
 }

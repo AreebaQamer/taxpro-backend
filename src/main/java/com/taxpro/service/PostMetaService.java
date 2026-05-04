@@ -14,7 +14,8 @@ public class PostMetaService {
     
     @Transactional
     public void saveThumbnail(Long postId, String imageData) {
-        System.out.println("Saving thumbnail for post: " + postId);
+        System.out.println("=== saveThumbnail called ===");
+        System.out.println("Post ID: " + postId);
         System.out.println("Image data length: " + (imageData != null ? imageData.length() : 0));
         
         if (imageData == null || imageData.isEmpty()) {
@@ -29,17 +30,17 @@ public class PostMetaService {
             if (existing != null) {
                 existing.setMetaValue(imageData);
                 postMetaRepository.save(existing);
-                System.out.println("Updated existing thumbnail");
+                System.out.println("✅ Updated existing thumbnail");
             } else {
                 PostMeta meta = new PostMeta();
                 meta.setPostId(postId);
                 meta.setMetaKey("_thumbnail_url");
                 meta.setMetaValue(imageData);
                 postMetaRepository.save(meta);
-                System.out.println("Created new thumbnail");
+                System.out.println("✅ Created new thumbnail");
             }
         } catch (Exception e) {
-            System.err.println("Error in saveThumbnail: " + e.getMessage());
+            System.err.println("❌ Error in saveThumbnail: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -55,13 +56,10 @@ public class PostMetaService {
     @Transactional
     public void deleteThumbnail(Long postId) {
         try {
-            PostMeta existing = postMetaRepository.findByPostIdAndMetaKey(postId, "_thumbnail_url").orElse(null);
-            if (existing != null) {
-                postMetaRepository.delete(existing);
-                System.out.println("Deleted thumbnail for post: " + postId);
-            }
+            postMetaRepository.deleteByPostIdAndMetaKey(postId, "_thumbnail_url");
+            System.out.println("✅ Deleted thumbnail for post: " + postId);
         } catch (Exception e) {
-            System.err.println("Error deleting thumbnail: " + e.getMessage());
+            System.err.println("❌ Error deleting thumbnail: " + e.getMessage());
         }
     }
 }

@@ -37,8 +37,14 @@ public class PostService {
     }
 @Transactional
 public Post createPost(Post post) {
-    System.out.println("=== CREATE POST START ===");
+    System.out.println("=== CREATE POST WITH IMAGE ===");
     System.out.println("Title: " + post.getPostTitle());
+    System.out.println("Has image: " + (post.getPostImage() != null));
+    
+    if (post.getPostImage() != null) {
+        System.out.println("Image length: " + post.getPostImage().length());
+        System.out.println("Image starts with: " + post.getPostImage().substring(0, Math.min(50, post.getPostImage().length())));
+    }
     
     // Set default values
     if (post.getPostDate() == null) {
@@ -53,26 +59,23 @@ public Post createPost(Post post) {
         post.setPostType("post");
     }
     
-    // TEMPORARILY SKIP IMAGE SAVING FOR TESTING
+    // Save image data separately
     String imageData = post.getPostImage();
-    post.setPostImage(null); // Clear transient field
+    post.setPostImage(null); // Clear before saving to posts table
     
-    // Save the post only (no image)
+    // Save the post
     Post saved = postRepository.save(post);
-    System.out.println("Post saved with ID: " + saved.getId());
+    System.out.println("✅ Post saved with ID: " + saved.getId());
     
-    // Comment out image saving for now
-    /*
+    // Save thumbnail to postmeta
     if (imageData != null && !imageData.isEmpty()) {
-        System.out.println("Saving thumbnail for post: " + saved.getId());
         postMetaService.saveThumbnail(saved.getId(), imageData);
-        saved.setPostImage(imageData);
+        saved.setPostImage(imageData); // Set back for response
+        System.out.println("✅ Image saved for post: " + saved.getId());
+    } else {
+        System.out.println("⚠️ No image to save");
     }
-    */
     
-    saved.setPostImage(null); // Don't return image
-    
-    System.out.println("=== CREATE POST END ===");
     return saved;
 }
     @Transactional

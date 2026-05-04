@@ -37,35 +37,42 @@ public class PostService {
     }
 
     @Transactional
-    public Post createPost(Post post) {
-        // Set default values
-        if (post.getPostDate() == null) {
-            post.setPostDate(LocalDateTime.now());
-        }
-        post.setPostModified(LocalDateTime.now());
-        
-        if (post.getPostStatus() == null) {
-            post.setPostStatus("draft");
-        }
-        if (post.getPostType() == null) {
-            post.setPostType("post");
-        }
-        
-        // Extract image before saving
-        String imageData = post.getPostImage();
-        post.setPostImage(null); // Clear transient field
-        
-        // Save the post to get ID
-        Post saved = postRepository.save(post);
-        
-        // Save thumbnail to postmeta if exists
-        if (imageData != null && !imageData.isEmpty()) {
-            postMetaService.saveThumbnail(saved.getId(), imageData);
-            saved.setPostImage(imageData); // Set back for response
-        }
-        
-        return saved;
+public Post createPost(Post post) {
+    System.out.println("=== CREATE POST START ===");
+    System.out.println("Title: " + post.getPostTitle());
+    System.out.println("Has image: " + (post.getPostImage() != null));
+    
+    // Set default values
+    if (post.getPostDate() == null) {
+        post.setPostDate(LocalDateTime.now());
     }
+    post.setPostModified(LocalDateTime.now());
+    
+    if (post.getPostStatus() == null) {
+        post.setPostStatus("draft");
+    }
+    if (post.getPostType() == null) {
+        post.setPostType("post");
+    }
+    
+    // Extract image before saving
+    String imageData = post.getPostImage();
+    post.setPostImage(null);
+    
+    // Save the post
+    Post saved = postRepository.save(post);
+    System.out.println("Post saved with ID: " + saved.getId());
+    
+    // Save thumbnail
+    if (imageData != null && !imageData.isEmpty()) {
+        System.out.println("Saving thumbnail for post: " + saved.getId());
+        postMetaService.saveThumbnail(saved.getId(), imageData);
+        saved.setPostImage(imageData);
+    }
+    
+    System.out.println("=== CREATE POST END ===");
+    return saved;
+}
 
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {

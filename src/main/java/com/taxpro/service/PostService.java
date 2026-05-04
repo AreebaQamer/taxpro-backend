@@ -35,12 +35,10 @@ public class PostService {
 
         return posts;
     }
-
-    @Transactional
+@Transactional
 public Post createPost(Post post) {
     System.out.println("=== CREATE POST START ===");
     System.out.println("Title: " + post.getPostTitle());
-    System.out.println("Has image: " + (post.getPostImage() != null));
     
     // Set default values
     if (post.getPostDate() == null) {
@@ -55,25 +53,28 @@ public Post createPost(Post post) {
         post.setPostType("post");
     }
     
-    // Extract image before saving
+    // TEMPORARILY SKIP IMAGE SAVING FOR TESTING
     String imageData = post.getPostImage();
-    post.setPostImage(null);
+    post.setPostImage(null); // Clear transient field
     
-    // Save the post
+    // Save the post only (no image)
     Post saved = postRepository.save(post);
     System.out.println("Post saved with ID: " + saved.getId());
     
-    // Save thumbnail
+    // Comment out image saving for now
+    /*
     if (imageData != null && !imageData.isEmpty()) {
         System.out.println("Saving thumbnail for post: " + saved.getId());
         postMetaService.saveThumbnail(saved.getId(), imageData);
         saved.setPostImage(imageData);
     }
+    */
+    
+    saved.setPostImage(null); // Don't return image
     
     System.out.println("=== CREATE POST END ===");
     return saved;
 }
-
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {
         Post existing = postRepository.findById(id)

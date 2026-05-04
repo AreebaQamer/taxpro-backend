@@ -5,8 +5,6 @@ import com.taxpro.repository.PostMetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;  // ✅ YEH IMPORT ADD KARO
-
 
 @Service
 public class PostMetaService {
@@ -16,32 +14,32 @@ public class PostMetaService {
     
     @Transactional
     public void saveThumbnail(Long postId, String imageData) {
+        System.out.println("Saving thumbnail for post: " + postId);
+        System.out.println("Image data length: " + (imageData != null ? imageData.length() : 0));
+        
         if (imageData == null || imageData.isEmpty()) {
-            System.out.println("No image to save for post: " + postId);
+            System.out.println("No image data to save");
             return;
         }
         
         try {
             // Check if thumbnail already exists
-            Optional<PostMeta> existing = postMetaRepository.findThumbnailMetaByPostId(postId);
+            PostMeta existing = postMetaRepository.findByPostIdAndMetaKey(postId, "_thumbnail_url").orElse(null);
             
-            if (existing.isPresent()) {
-                // Update existing
-                PostMeta meta = existing.get();
-                meta.setMetaValue(imageData);
-                postMetaRepository.save(meta);
-                System.out.println("Updated thumbnail for post: " + postId);
+            if (existing != null) {
+                existing.setMetaValue(imageData);
+                postMetaRepository.save(existing);
+                System.out.println("Updated existing thumbnail");
             } else {
-                // Create new
                 PostMeta meta = new PostMeta();
                 meta.setPostId(postId);
                 meta.setMetaKey("_thumbnail_url");
                 meta.setMetaValue(imageData);
                 postMetaRepository.save(meta);
-                System.out.println("Saved new thumbnail for post: " + postId);
+                System.out.println("Created new thumbnail");
             }
         } catch (Exception e) {
-            System.err.println("Error saving thumbnail: " + e.getMessage());
+            System.err.println("Error in saveThumbnail: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -50,7 +48,6 @@ public class PostMetaService {
         try {
             return postMetaRepository.findThumbnailByPostId(postId);
         } catch (Exception e) {
-            System.err.println("Error getting thumbnail: " + e.getMessage());
             return null;
         }
     }
@@ -58,8 +55,11 @@ public class PostMetaService {
     @Transactional
     public void deleteThumbnail(Long postId) {
         try {
-            postMetaRepository.deleteByPostIdAndMetaKey(postId, "_thumbnail_url");
-            System.out.println("Deleted thumbnail for post: " + postId);
+            PostMeta existing = postMetaRepository.findByPostIdAndMetaKey(postId, "_thumbnail_url").orElse(null);
+            if (existing != null) {
+                postMetaRepository.delete(existing);
+                System.out.println("Deleted thumbnail for post: " + postId);
+            }
         } catch (Exception e) {
             System.err.println("Error deleting thumbnail: " + e.getMessage());
         }

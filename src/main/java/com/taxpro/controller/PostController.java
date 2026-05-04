@@ -46,13 +46,24 @@ public class PostController {
     }
 
     @Operation(summary = "Create new post")
-    @PostMapping("/posts")  // ← Make sure this is line 50 and there's only ONE @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        System.out.println("postImage received: " + post.getPostImage());
-        System.out.println("guid received: " + post.getGuid());
+    @PostMapping("/posts")
+public ResponseEntity<?> createPost(@RequestBody Post post) {
+    try {
+        System.out.println("=== CREATE POST API ===");
+        System.out.println("Title: " + post.getPostTitle());
+        System.out.println("PostImage length: " + (post.getPostImage() != null ? post.getPostImage().length() : 0));
+        System.out.println("PostImage preview: " + (post.getPostImage() != null ? post.getPostImage().substring(0, Math.min(100, post.getPostImage().length())) : "null"));
+        
         Post savedPost = postService.createPost(post);
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
+    } catch (Exception e) {
+        System.err.println("ERROR in createPost: " + e.getMessage());
+        e.printStackTrace();
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
 
     @Operation(summary = "Update post")
     @PutMapping("/posts/{id}")

@@ -49,7 +49,7 @@ public class Post {
     
     @Column(name = "postType")
     @Schema(description = "Post type", example = "post")
-private String postType = "blog";  
+            private String postType = "blog";  
     
     @Column(name = "post_author")
     @Schema(description = "Author ID", example = "1")
@@ -86,7 +86,14 @@ private String postPassword = "";
 
 @Column(name = "post_parent")
 private Long postParent = 0L;
+  @Column(name = "post_date_gmt")
+    private LocalDateTime postDateGmt;
     
+    @Column(name = "post_modified_gmt")
+    private LocalDateTime postModifiedGmt;
+    
+    // ... other fields
+ 
     // Constructors
     public Post() {}
     
@@ -217,4 +224,23 @@ public String getPostImage() {
 public void setPostImage(String postImage) {
     this.postImage = postImage;
 }
+   
+    // ✅ YEH GETTERS/SETTERS ADD KARO
+    public LocalDateTime getPostDateGmt() {
+        return postDateGmt;
+    }
+    
+    public void setPostDateGmt(LocalDateTime postDateGmt) {
+        this.postDateGmt = postDateGmt;
+    }
+    
+    public LocalDateTime getPostModifiedGmt() {
+        return postModifiedGmt;
+    }
+    
+    public void setPostModifiedGmt(LocalDateTime postModifiedGmt) {
+        this.postModifiedGmt = postModifiedGmt;
+    }
+    
+
 }

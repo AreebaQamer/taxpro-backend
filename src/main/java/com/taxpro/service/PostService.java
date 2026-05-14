@@ -132,7 +132,16 @@ public class PostService {
         // Delete post
         postRepository.deleteById(id);
     }
-
+  private String generateSlug(String title) {
+        if (title == null || title.isEmpty()) {
+            return "untitled";
+        }
+        return title.toLowerCase()
+            .replaceAll("[^a-z0-9\\s-]", "")  // Remove special chars
+            .replaceAll("\\s+", "-")           // Spaces to hyphens
+            .replaceAll("-+", "-")             // Remove multiple hyphens
+            .trim();
+    }
     @Transactional
     public Post publishPost(Long id) {
         Post post = postRepository.findById(id)

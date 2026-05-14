@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,122 +19,78 @@ public class PostService {
     @Autowired
     private PostMetaService postMetaService;
 
-    // ✅ Helper: Generate URL slug from title
-    private String generateSlug(String title) {
-        if (title == null) return "untitled";
-        return title.toLowerCase()
-            .replaceAll("[^a-z0-9\\s-]", "")  // Remove special characters
-            .replaceAll("\\s+", "-")           // Spaces to hyphens
-            .replaceAll("-+", "-");            // Remove multiple hyphens
-    }
-    
-    // ✅ ADMIN: Get all posts (with type and status filters)
     @Transactional
-    public Page<Post> getAllPosts(String postType, String status, Pageable pageable) {
-        Page<Post> posts = postRepository.findAllPosts(postType, status, pageable);
-        
-        // Add images to each post
+    public Page<Post> getAllPosts(String status, Pageable pageable) {
+        Page<Post> posts = status != null && !status.isEmpty()
+            ? postRepository.findByPostStatusAndPostType(status, "post", pageable)
+            : postRepository.findByPostType("post", pageable);
+
+        // Fetch thumbnails for each post
         posts.forEach(post -> {
             String thumbnail = postMetaService.getThumbnail(post.getId());
             if (thumbnail != null && !thumbnail.isEmpty()) {
                 post.setPostImage(thumbnail);
             }
         });
-        
+
         return posts;
     }
+@Transactional
+public Post createPost(Post post) {
+    System.out.println("=== CREATE POST WITH IMAGE ===");
+    System.out.println("Title: " + post.getPostTitle());
+    System.out.println("Has image: " + (post.getPostImage() != null));
     
-    // ✅ PUBLIC: Get published posts (with type filter - blog ya news)
-    public Page<Post> getPublishedPosts(String postType, Pageable pageable) {
-        Page<Post> posts;
-        
-        if (postType != null && !postType.isEmpty()) {
-            // Specific type (blog ya news)
-            posts = postRepository.findByPostStatusAndPostType("publish", postType, pageable);
-        } else {
-            // All types
-            posts = postRepository.findByPostStatus("publish", pageable);
-        }
-        
-        // Add images to each post
-        posts.forEach(post -> {
-            String thumbnail = postMetaService.getThumbnail(post.getId());
-            if (thumbnail != null && !thumbnail.isEmpty()) {
-                post.setPostImage(thumbnail);
-            }
-        });
-        
-        return posts;
+    if (post.getPostImage() != null) {
+        System.out.println("Image length: " + post.getPostImage().length());
+        System.out.println("Image starts with: " + post.getPostImage().substring(0, Math.min(50, post.getPostImage().length())));
     }
     
-    // ✅ ADMIN: Create new post
-    @Transactional
-    public Post createPost(Post post) {
-        System.out.println("=== Creating New Post ===");
-        System.out.println("Title: " + post.getPostTitle());
-        System.out.println("Type: " + post.getPostType()); // blog ya news
-        
-        // Set default values
-        LocalDateTime now = LocalDateTime.now();
-        if (post.getPostDate() == null) {
-            post.setPostDate(now);
-            post.setPostDateGmt(now);
-        }
-        post.setPostModified(now);
-        post.setPostModifiedGmt(now);
-        
-        if (post.getPostStatus() == null) {
-            post.setPostStatus("draft");
-        }
-        
-        // Default type: blog
-        if (post.getPostType() == null || post.getPostType().isEmpty()) {
-            post.setPostType("blog");
-        }
-        
-        // Generate slug from title
-        if (post.getPostName() == null || post.getPostName().isEmpty()) {
-            post.setPostName(generateSlug(post.getPostTitle()));
-        }
-        
-        // Save image separately (image base64 data)
-        String imageData = post.getPostImage();
-        post.setPostImage(null);  // Clear before saving to posts table
-        
-        // Save post
-        Post saved = postRepository.save(post);
-        System.out.println("✅ Post saved with ID: " + saved.getId());
-        
-        // Save thumbnail to postmeta table
-        if (imageData != null && !imageData.isEmpty()) {
-            postMetaService.saveThumbnail(saved.getId(), imageData);
-            saved.setPostImage(imageData);  // Set back for response
-            System.out.println("✅ Image saved");
-        }
-        
-        return saved;
+    // Set default values
+    if (post.getPostDate() == null) {
+        post.setPostDate(LocalDateTime.now());
+    }
+    post.setPostModified(LocalDateTime.now());
+    
+    if (post.getPostStatus() == null) {
+        post.setPostStatus("draft");
+    }
+    if (post.getPostType() == null) {
+        post.setPostType("post");
     }
     
-    // ✅ ADMIN: Update existing post
+    // Save image data separately
+    String imageData = post.getPostImage();
+    post.setPostImage(null); // Clear before saving to posts table
+    
+    // Save the post
+    Post saved = postRepository.save(post);
+    System.out.println("✅ Post saved with ID: " + saved.getId());
+    
+    // Save thumbnail to postmeta
+    if (imageData != null && !imageData.isEmpty()) {
+        postMetaService.saveThumbnail(saved.getId(), imageData);
+        saved.setPostImage(imageData); // Set back for response
+        System.out.println("✅ Image saved for post: " + saved.getId());
+    } else {
+        System.out.println("⚠️ No image to save");
+    }
+    
+    return saved;
+}
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {
         Post existing = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Post not found"));
+            .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         
-        // Update fields
+        // Update basic fields
         existing.setPostTitle(updatedPost.getPostTitle());
         existing.setPostContent(updatedPost.getPostContent());
         existing.setPostExcerpt(updatedPost.getPostExcerpt());
         existing.setPostStatus(updatedPost.getPostStatus());
-        existing.setPostType(updatedPost.getPostType());  // ✅ Blog ya News update
         existing.setPostModified(LocalDateTime.now());
-        existing.setPostModifiedGmt(LocalDateTime.now());
         
-        // Update slug if title changed
-        if (!existing.getPostTitle().equals(updatedPost.getPostTitle())) {
-            existing.setPostName(generateSlug(updatedPost.getPostTitle()));
-        }
-        
+        // Save post
         Post saved = postRepository.save(existing);
         
         // Handle image update
@@ -151,8 +105,7 @@ public class PostService {
         
         return saved;
     }
-    
-    // ✅ PUBLIC/ADMIN: Get single post by ID
+
     public Optional<Post> getPostById(Long id) {
         Optional<Post> post = postRepository.findById(id);
         post.ifPresent(p -> {
@@ -161,60 +114,83 @@ public class PostService {
         });
         return post;
     }
-    
-    // ✅ ADMIN: Delete post
+
     @Transactional
     public void deletePost(Long id) {
         if (!postRepository.existsById(id)) {
-            throw new RuntimeException("Post not found");
+            throw new RuntimeException("Post not found with id: " + id);
         }
-        // Delete image first
+        // Delete thumbnail from postmeta first
         postMetaService.deleteThumbnail(id);
         // Delete post
         postRepository.deleteById(id);
     }
-    
-    // ✅ ADMIN: Publish post (draft -> publish)
+
     @Transactional
     public Post publishPost(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Post not found"));
+            .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         post.setPostStatus("publish");
         post.setPostModified(LocalDateTime.now());
         Post saved = postRepository.save(post);
         
+        // Set image for response
         String thumbnail = postMetaService.getThumbnail(saved.getId());
         saved.setPostImage(thumbnail);
+        
         return saved;
     }
-    
-    // ✅ ADMIN: Move to draft (publish -> draft)
+
     @Transactional
     public Post moveToDraft(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Post not found"));
+            .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         post.setPostStatus("draft");
         post.setPostModified(LocalDateTime.now());
         Post saved = postRepository.save(post);
         
+        // Set image for response
         String thumbnail = postMetaService.getThumbnail(saved.getId());
         saved.setPostImage(thumbnail);
+        
         return saved;
     }
-    
-    // ✅ ADMIN: Get statistics (total, published, drafts)
-    public Map<String, Long> getStats() {
-        Map<String, Long> stats = new HashMap<>();
-        stats.put("total", postRepository.count());
-        stats.put("published", postRepository.countByPostStatus("publish"));
-        stats.put("drafts", postRepository.countByPostStatus("draft"));
-        return stats;
-    }
-    
-    // ✅ ADMIN: Search posts
-    public Page<Post> searchPosts(String keyword, String postType, String status, Pageable pageable) {
-        Page<Post> posts = postRepository.searchPosts(keyword, postType, status, pageable);
+
+    public Page<Post> getPublishedPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findByPostStatus("publish", pageable);
         
+        // Fetch thumbnails
+        posts.forEach(post -> {
+            String thumbnail = postMetaService.getThumbnail(post.getId());
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                post.setPostImage(thumbnail);
+            }
+        });
+        
+        return posts;
+    }
+
+    public long getTotalCount() {
+        return postRepository.count();
+    }
+
+    public long getPublishedCount() {
+        return postRepository.countByPostStatus("publish");
+    }
+
+    public long getDraftCount() {
+        return postRepository.countByPostStatus("draft");
+    }
+
+    public Page<Post> searchPosts(String keyword, String status, Pageable pageable) {
+        Page<Post> posts;
+        if (status != null && !status.isEmpty()) {
+            posts = postRepository.searchByKeywordAndStatus(keyword, status, pageable);
+        } else {
+            posts = postRepository.searchByKeyword(keyword, pageable);
+        }
+        
+        // Fetch thumbnails
         posts.forEach(post -> {
             String thumbnail = postMetaService.getThumbnail(post.getId());
             if (thumbnail != null && !thumbnail.isEmpty()) {

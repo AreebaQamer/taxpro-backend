@@ -11,51 +11,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")  // Base URL: /api
-@CrossOrigin(origins = "*")  // Frontend ko access allow
+@RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class PostBlogController {
 
     @Autowired
     private PostService postService;
 
-    // ✅ GET /api/posts - Sab published posts (blog + news dono)
     @GetMapping("/posts")
-    public ResponseEntity<Page<Post>> getAllPublishedPosts(
+    public ResponseEntity<Page<Post>> getPublishedPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
-        Page<Post> posts = postService.getPublishedPosts(null, pageable);  // null = all types
+
+        // ✅ Sari published posts — koi date filter nahi
+        Page<Post> posts = postService.getPublishedPosts(pageable);
+
         return ResponseEntity.ok(posts);
     }
-    
-    // ✅ GET /api/posts/blog - Sirf blog posts
-    @GetMapping("/posts/blog")
-    public ResponseEntity<Page<Post>> getBlogPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
-        Page<Post> posts = postService.getPublishedPosts("blog", pageable);
-        return ResponseEntity.ok(posts);
-    }
-    
-    // ✅ GET /api/posts/news - Sirf news posts
-    @GetMapping("/posts/news")
-    public ResponseEntity<Page<Post>> getNewsPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        
-        Pageable pageable = PageRequest.of(page, size, Sort.by("postDate").descending());
-        Page<Post> posts = postService.getPublishedPosts("news", pageable);
-        return ResponseEntity.ok(posts);
-    }
-    
-    // ✅ GET /api/posts/{id} - Single post by ID
+
     @GetMapping("/posts/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Post> getPublishedPostById(@PathVariable Long id) {
         return postService.getPostById(id)
-                .filter(post -> "publish".equals(post.getPostStatus()))  // Sirf published post
+                .filter(post -> "publish".equals(post.getPostStatus()))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

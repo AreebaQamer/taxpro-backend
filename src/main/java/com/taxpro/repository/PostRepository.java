@@ -5,41 +5,50 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    
-    // ✅ Sirf published posts (public website ke liye)
+
     Page<Post> findByPostStatus(String postStatus, Pageable pageable);
-    
-    // ✅ Published posts with type filter (blog ya news)
-    Page<Post> findByPostStatusAndPostType(String postStatus, String postType, Pageable pageable);
-    
-    // ✅ Admin: Sab posts with type and status filter
-    @Query("SELECT p FROM Post p WHERE " +
-           "(:postType IS NULL OR p.postType = :postType) AND " +
-           "(:status IS NULL OR p.postStatus = :status)")
-    Page<Post> findAllPosts(@Param("postType") String postType, 
-                           @Param("status") String status, 
-                           Pageable pageable);
-    
-    // ✅ Search posts with filters
-    @Query("SELECT p FROM Post p WHERE " +
-           "(:postType IS NULL OR p.postType = :postType) AND " +
-           "(:status IS NULL OR p.postStatus = :status) AND " +
-           "(LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-    Page<Post> searchPosts(@Param("keyword") String keyword, 
-                          @Param("postType") String postType,
-                          @Param("status") String status, 
-                          Pageable pageable);
-    
-    // ✅ Count posts by status
+
     long countByPostStatus(String postStatus);
-    
-    // ✅ Get single published post by ID
-    Optional<Post> findByIdAndPostStatus(Long id, String postStatus);
+
+    @Query("SELECT p FROM Post p WHERE p.postStatus = 'publish' AND p.postType = 'post'")
+    Page<Post> findAllPublishedPosts(Pageable pageable);
+
+    // ✅ String ki jagah LocalDateTime parameter use karo
+    @Query("SELECT p FROM Post p WHERE p.postStatus = 'publish' AND p.postType = 'post' AND p.postDate < :cutoff")
+    Page<Post> findPublishedPostsBefore2026(
+        @org.springframework.data.repository.query.Param("cutoff") java.time.LocalDateTime cutoff,
+        Pageable pageable
+    );
+
+    @Query("SELECT p FROM Post p WHERE p.id = :id AND p.postStatus = 'publish'")
+    Optional<Post> findPublishedPostById(
+        @org.springframework.data.repository.query.Param("id") Long id
+    );
+
+// ✅ CORRECT - This looks for your saved base64 images
+@Query("SELECT pm.metaValue FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = '_thumbnail_url'")
+String findThumbnailByPostId(@Param("postId") Long postId);
+// Add to PostRepository.java
+@Query("SELECT p FROM Post p WHERE " +
+       "LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+Page<Post> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+@Query("SELECT p FROM Post p WHERE " +
+       "p.postStatus = :status AND " +
+       "(LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword, 
+                                     @Param("status") String status, 
+                                     Pageable pageable);
+ Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
+Page<Post> findByPostType(String postType, Pageable pageable);
 }

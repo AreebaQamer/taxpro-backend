@@ -18,12 +18,16 @@ public class PostService {
     
     @Autowired
     private PostMetaService postMetaService;
-
-    @Transactional
+  @Transactional
     public Page<Post> getAllPosts(String status, Pageable pageable) {
-        Page<Post> posts = status != null && !status.isEmpty()
-            ? postRepository.findByPostStatusAndPostType(status, "post", pageable)
-            : postRepository.findByPostType("post", pageable);
+        Page<Post> posts;
+        
+        // ✅ Sab posts dikhao (blog aur news dono)
+        if (status != null && !status.isEmpty()) {
+            posts = postRepository.findByPostStatus(status, pageable);
+        } else {
+            posts = postRepository.findAll(pageable);
+        }
 
         // Fetch thumbnails for each post
         posts.forEach(post -> {
@@ -35,70 +39,73 @@ public class PostService {
 
         return posts;
     }
-@Transactional
-public Post createPost(Post post) {
-    System.out.println("=== CREATE POST WITH IMAGE ===");
-    System.out.println("Title: " + post.getPostTitle());
-    System.out.println("Has image: " + (post.getPostImage() != null));
     
-    if (post.getPostImage() != null) {
-        System.out.println("Image length: " + post.getPostImage().length());
-        System.out.println("Image starts with: " + post.getPostImage().substring(0, Math.min(50, post.getPostImage().length())));
+ // ✅ Create post method
+    @Transactional
+    public Post createPost(Post post) {
+        System.out.println("=== CREATE POST WITH IMAGE ===");
+        System.out.println("Title: " + post.getPostTitle());
+        System.out.println("PostType: " + post.getPostType()); // 'blog' ya 'news'
+        
+        // Set default values
+        if (post.getPostDate() == null) {
+            post.setPostDate(LocalDateTime.now());
+            post.setPostDateGmt(LocalDateTime.now());
+        }
+        post.setPostModified(LocalDateTime.now());
+        post.setPostModifiedGmt(LocalDateTime.now());
+        
+        if (post.getPostStatus() == null) {
+            post.setPostStatus("draft");
+        }
+        
+        // ✅ Default postType set karo (blog ya news)
+        if (post.getPostType() == null || post.getPostType().isEmpty()) {
+            post.setPostType("blog");
+        }
+        
+        // Generate slug from title
+        if (post.getPostName() == null || post.getPostName().isEmpty()) {
+            post.setPostName(generateSlug(post.getPostTitle()));
+        }
+        
+        // Save image data separately
+        String imageData = post.getPostImage();
+        post.setPostImage(null);
+        
+        // Save the post
+        Post saved = postRepository.save(post);
+        System.out.println("✅ Post saved with ID: " + saved.getId());
+        System.out.println("✅ PostType: " + saved.getPostType());
+        
+        // Save thumbnail to postmeta
+        if (imageData != null && !imageData.isEmpty()) {
+            postMetaService.saveThumbnail(saved.getId(), imageData);
+            saved.setPostImage(imageData);
+            System.out.println("✅ Image saved for post: " + saved.getId());
+        }
+        
+        return saved;
     }
     
-    // Set default values
-    if (post.getPostDate() == null) {
-        post.setPostDate(LocalDateTime.now());
-    }
-    post.setPostModified(LocalDateTime.now());
-    
-    if (post.getPostStatus() == null) {
-        post.setPostStatus("draft");
-    }
-    if (post.getPostType() == null) {
-        post.setPostType("post");
-    }
-    
-    // Save image data separately
-    String imageData = post.getPostImage();
-    post.setPostImage(null); // Clear before saving to posts table
-    
-    // Save the post
-    Post saved = postRepository.save(post);
-    System.out.println("✅ Post saved with ID: " + saved.getId());
-    
-    // Save thumbnail to postmeta
-    if (imageData != null && !imageData.isEmpty()) {
-        postMetaService.saveThumbnail(saved.getId(), imageData);
-        saved.setPostImage(imageData); // Set back for response
-        System.out.println("✅ Image saved for post: " + saved.getId());
-    } else {
-        System.out.println("⚠️ No image to save");
-    }
-    
-    return saved;
-}
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {
         Post existing = postRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+            .orElseThrow(() -> new RuntimeException("Post not found"));
         
-        // Update basic fields
         existing.setPostTitle(updatedPost.getPostTitle());
         existing.setPostContent(updatedPost.getPostContent());
         existing.setPostExcerpt(updatedPost.getPostExcerpt());
         existing.setPostStatus(updatedPost.getPostStatus());
+        existing.setPostType(updatedPost.getPostType()); // ✅ Update postType
         existing.setPostModified(LocalDateTime.now());
         
-        // Save post
         Post saved = postRepository.save(existing);
         
-        // Handle image update
         if (updatedPost.getPostImage() != null && !updatedPost.getPostImage().isEmpty()) {
             postMetaService.saveThumbnail(saved.getId(), updatedPost.getPostImage());
             saved.setPostImage(updatedPost.getPostImage());
         } else {
-            // Keep existing image
             String existingImage = postMetaService.getThumbnail(saved.getId());
             saved.setPostImage(existingImage);
         }

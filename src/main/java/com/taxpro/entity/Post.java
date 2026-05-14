@@ -49,7 +49,7 @@ public class Post {
     
     @Column(name = "postType")
     @Schema(description = "Post type", example = "post")
-private String postType = "post";  // Default value 'post'
+private String postType = "blog";  
     
     @Column(name = "post_author")
     @Schema(description = "Author ID", example = "1")

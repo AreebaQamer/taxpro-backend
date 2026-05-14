@@ -45,26 +45,26 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-  @PostMapping("/posts")
+    @Operation(summary = "Create new post")
+    @PostMapping("/posts")
 public ResponseEntity<?> createPost(@RequestBody Post post) {
     try {
         System.out.println("=== CREATE POST API ===");
-        System.out.println("Received post: " + post.getPostTitle());
-        System.out.println("Post type: " + post.getPostType());
+        System.out.println("Title: " + post.getPostTitle());
+        System.out.println("PostImage length: " + (post.getPostImage() != null ? post.getPostImage().length() : 0));
+        System.out.println("PostImage preview: " + (post.getPostImage() != null ? post.getPostImage().substring(0, Math.min(100, post.getPostImage().length())) : "null"));
         
         Post savedPost = postService.createPost(post);
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
-        
     } catch (Exception e) {
         System.err.println("ERROR in createPost: " + e.getMessage());
-        e.printStackTrace();  // ✅ Full stack trace
-        
+        e.printStackTrace();
         Map<String, String> error = new HashMap<>();
         error.put("error", e.getMessage());
-        error.put("details", e.getClass().getSimpleName());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
     @Operation(summary = "Update post")
     @PutMapping("/posts/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {

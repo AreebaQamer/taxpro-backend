@@ -47,10 +47,11 @@ public class Post {
     @Schema(description = "Post status", allowableValues = {"draft", "publish", "trash"})
     private String postStatus;
     
-    @Column(name = "post_type")
-    @Schema(description = "Post type", example = "post")
-private String postType = "post";  // Default value 'post'
-    
+  @Column(name = "postType")
+      @Schema(description = "Post type", example = "post")
+
+    private String postType = "blog";
+        
     @Column(name = "post_author")
     @Schema(description = "Author ID", example = "1")
     private Long postAuthor;

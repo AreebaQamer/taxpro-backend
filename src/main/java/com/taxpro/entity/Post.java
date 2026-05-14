@@ -47,7 +47,7 @@ public class Post {
     @Schema(description = "Post status", allowableValues = {"draft", "publish", "trash"})
     private String postStatus;
     
-    @Column(name = "post_type")
+    @Column(name = "postType")
     @Schema(description = "Post type", example = "post")
 private String postType = "post";  // Default value 'post'
     

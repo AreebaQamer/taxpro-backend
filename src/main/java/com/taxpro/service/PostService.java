@@ -39,12 +39,6 @@ public class PostService {
 public Post createPost(Post post) {
     System.out.println("=== CREATE POST WITH IMAGE ===");
     System.out.println("Title: " + post.getPostTitle());
-    System.out.println("Has image: " + (post.getPostImage() != null));
-    
-    if (post.getPostImage() != null) {
-        System.out.println("Image length: " + post.getPostImage().length());
-        System.out.println("Image starts with: " + post.getPostImage().substring(0, Math.min(50, post.getPostImage().length())));
-    }
     
     // Set default values
     if (post.getPostDate() == null) {
@@ -56,27 +50,62 @@ public Post createPost(Post post) {
         post.setPostStatus("draft");
     }
     if (post.getPostType() == null) {
-        post.setPostType("post");
+        post.setPostType("blog");
     }
+    
+    // ✅ CRITICAL: Generate slug from title for post_name
+    if (post.getPostName() == null || post.getPostName().isEmpty()) {
+        String slug = generateSlug(post.getPostTitle());
+        post.setPostName(slug);
+    }
+    
+    // ✅ Set default values for WordPress required fields
+    if (post.getGuid() == null || post.getGuid().isEmpty()) {
+        // Will be set after save with ID
+    }
+    if (post.getToPing() == null) post.setToPing("");
+    if (post.getPinged() == null) post.setPinged("");
+    if (post.getPostContentFiltered() == null) post.setPostContentFiltered("");
+    if (post.getCommentStatus() == null) post.setCommentStatus("open");
+    if (post.getPingStatus() == null) post.setPingStatus("open");
+    if (post.getCommentCount() == null) post.setCommentCount(0L);
+    if (post.getMenuOrder() == null) post.setMenuOrder(0);
+    if (post.getPostMimeType() == null) post.setPostMimeType("");
+    if (post.getPostPassword() == null) post.setPostPassword("");
+    if (post.getPostParent() == null) post.setPostParent(0L);
     
     // Save image data separately
     String imageData = post.getPostImage();
-    post.setPostImage(null); // Clear before saving to posts table
+    post.setPostImage(null);
     
     // Save the post
     Post saved = postRepository.save(post);
     System.out.println("✅ Post saved with ID: " + saved.getId());
     
+    // ✅ Set GUID after saving (WordPress standard)
+    if (saved.getGuid() == null || saved.getGuid().isEmpty()) {
+        saved.setGuid("https://sqamer.com/?p=" + saved.getId());
+        saved = postRepository.save(saved);
+    }
+    
     // Save thumbnail to postmeta
     if (imageData != null && !imageData.isEmpty()) {
         postMetaService.saveThumbnail(saved.getId(), imageData);
-        saved.setPostImage(imageData); // Set back for response
+        saved.setPostImage(imageData);
         System.out.println("✅ Image saved for post: " + saved.getId());
-    } else {
-        System.out.println("⚠️ No image to save");
     }
     
     return saved;
+}
+
+// Helper method to generate slug
+private String generateSlug(String title) {
+    if (title == null) return "untitled";
+    return title.toLowerCase()
+            .replaceAll("[^a-z0-9\\s-]", "")
+            .trim()
+            .replaceAll("\\s+", "-")
+            .replaceAll("-+", "-");
 }
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {

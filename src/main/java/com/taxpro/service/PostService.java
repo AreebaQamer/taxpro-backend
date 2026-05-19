@@ -53,16 +53,20 @@ public Post createPost(Post post) {
         post.setPostType("blog");
     }
     
-    // ✅ CRITICAL: Generate slug from title for post_name
+    // Generate slug from title for post_name
     if (post.getPostName() == null || post.getPostName().isEmpty()) {
         String slug = generateSlug(post.getPostTitle());
         post.setPostName(slug);
     }
     
-    // ✅ Set default values for WordPress required fields
+    // ✅✅✅ CRITICAL FIX: Set a GUID before saving (use temporary value)
+    // The database requires guid to be NOT NULL
     if (post.getGuid() == null || post.getGuid().isEmpty()) {
-        // Will be set after save with ID
+        // Use a temporary GUID - will be updated after we have the ID
+        post.setGuid("https://sqamer.com/?p=temp");
     }
+    
+    // Set default values for WordPress required fields
     if (post.getToPing() == null) post.setToPing("");
     if (post.getPinged() == null) post.setPinged("");
     if (post.getPostContentFiltered() == null) post.setPostContentFiltered("");
@@ -78,15 +82,15 @@ public Post createPost(Post post) {
     String imageData = post.getPostImage();
     post.setPostImage(null);
     
-    // Save the post
+    // ✅ Save the post (now guid is NOT null)
     Post saved = postRepository.save(post);
     System.out.println("✅ Post saved with ID: " + saved.getId());
     
-    // ✅ Set GUID after saving (WordPress standard)
-    if (saved.getGuid() == null || saved.getGuid().isEmpty()) {
-        saved.setGuid("https://sqamer.com/?p=" + saved.getId());
-        saved = postRepository.save(saved);
-    }
+    // ✅ Update GUID with the correct ID (WordPress standard)
+    String correctGuid = "https://sqamer.com/?p=" + saved.getId();
+    saved.setGuid(correctGuid);
+    saved = postRepository.save(saved);
+    System.out.println("✅ GUID updated to: " + correctGuid);
     
     // Save thumbnail to postmeta
     if (imageData != null && !imageData.isEmpty()) {

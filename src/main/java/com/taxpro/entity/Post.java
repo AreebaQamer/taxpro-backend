@@ -39,7 +39,7 @@ public class Post {
     @Schema(description = "Last modified date")
     private LocalDateTime postModified;
     
-    @Column(name = "guid")
+@Column(name = "guid", nullable = false, updatable = false)
     @Schema(description = "Post URL/identifier")
     private String guid;
     
@@ -217,5 +217,12 @@ public String getPostImage() {
 
 public void setPostImage(String postImage) {
     this.postImage = postImage;
+}
+@PrePersist
+private void generateGuid() {
+    if (this.guid == null || this.guid.isEmpty()) {
+        // Temporary value, will be updated after ID is generated
+        this.guid = "https://sqamer.com/?p=temp";
+    }
 }
 }

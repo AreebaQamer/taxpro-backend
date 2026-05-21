@@ -25,7 +25,6 @@ public class PostService {
             ? postRepository.findByPostStatusAndPostType(status, "post", pageable)
             : postRepository.findByPostType("post", pageable);
 
-        // Fetch thumbnails for each post
         posts.forEach(post -> {
             String thumbnail = postMetaService.getThumbnail(post.getId());
             if (thumbnail != null && !thumbnail.isEmpty()) {
@@ -35,103 +34,105 @@ public class PostService {
 
         return posts;
     }
-@Transactional
-public Post createPost(Post post) {
-    System.out.println("=== CREATE POST WITH IMAGE ===");
-    System.out.println("Title: " + post.getPostTitle());
-    
-    // Set default values
-    if (post.getPostDate() == null) {
-        post.setPostDate(LocalDateTime.now());
-    }
-    post.setPostModified(LocalDateTime.now());
-    
-    if (post.getPostStatus() == null) {
-        post.setPostStatus("draft");
-    }
-    if (post.getPostType() == null) {
-        post.setPostType("blog");
-    }
-    
-    // Generate slug from title for post_name
-    if (post.getPostName() == null || post.getPostName().isEmpty()) {
-        String slug = generateSlug(post.getPostTitle());
-        post.setPostName(slug);
-    }
-    
-    // ✅✅✅ CRITICAL FIX: Set a GUID before saving (use temporary value)
-    // The database requires guid to be NOT NULL
-    if (post.getGuid() == null || post.getGuid().isEmpty()) {
-        // Use a temporary GUID - will be updated after we have the ID
-        post.setGuid("https://sqamer.com/?p=temp");
-    }
-    
-    // Set default values for WordPress required fields
-    if (post.getToPing() == null) post.setToPing("");
-    if (post.getPinged() == null) post.setPinged("");
-    if (post.getPostContentFiltered() == null) post.setPostContentFiltered("");
-    if (post.getCommentStatus() == null) post.setCommentStatus("open");
-    if (post.getPingStatus() == null) post.setPingStatus("open");
-    if (post.getCommentCount() == null) post.setCommentCount(0L);
-    if (post.getMenuOrder() == null) post.setMenuOrder(0);
-    if (post.getPostMimeType() == null) post.setPostMimeType("");
-    if (post.getPostPassword() == null) post.setPostPassword("");
-    if (post.getPostParent() == null) post.setPostParent(0L);
-    
-    // Save image data separately
-    String imageData = post.getPostImage();
-    post.setPostImage(null);
-    
-    // ✅ Save the post (now guid is NOT null)
-    Post saved = postRepository.save(post);
-    System.out.println("✅ Post saved with ID: " + saved.getId());
-    
-    // ✅ Update GUID with the correct ID (WordPress standard)
-    String correctGuid = "https://sqamer.com/?p=" + saved.getId();
-    saved.setGuid(correctGuid);
-    saved = postRepository.save(saved);
-    System.out.println("✅ GUID updated to: " + correctGuid);
-    
-    // Save thumbnail to postmeta
-    if (imageData != null && !imageData.isEmpty()) {
-        postMetaService.saveThumbnail(saved.getId(), imageData);
-        saved.setPostImage(imageData);
-        System.out.println("✅ Image saved for post: " + saved.getId());
-    }
-    
-    return saved;
-}
 
-// Helper method to generate slug
-private String generateSlug(String title) {
-    if (title == null) return "untitled";
-    return title.toLowerCase()
-            .replaceAll("[^a-z0-9\\s-]", "")
-            .trim()
-            .replaceAll("\\s+", "-")
-            .replaceAll("-+", "-");
-}
+    @Transactional
+    public Post createPost(Post post) {
+        System.out.println("=== CREATE POST WITH IMAGE ===");
+        System.out.println("Title: " + post.getPostTitle());
+        
+        LocalDateTime now = LocalDateTime.now();
+        
+        // ✅ Set required fields for NOT NULL columns
+        if (post.getPostDate() == null) post.setPostDate(now);
+        if (post.getPostModified() == null) post.setPostModified(now);
+        
+        if (post.getPostStatus() == null) post.setPostStatus("draft");
+        if (post.getPostType() == null) post.setPostType("blog");
+        
+        // ✅ Generate post_name (slug) - CRITICAL
+        if (post.getPostName() == null || post.getPostName().isEmpty()) {
+            String slug = generateSlug(post.getPostTitle());
+            post.setPostName(slug);
+            System.out.println("Generated post_name: " + slug);
+        }
+        
+        // ✅ Set GUID - CRITICAL
+        if (post.getGuid() == null || post.getGuid().isEmpty()) {
+            post.setGuid("https://sqamer.com/?p=temp");
+        }
+        
+        // ✅ Set all other NOT NULL columns with defaults
+        if (post.getPostAuthor() == null) post.setPostAuthor(1L);
+        if (post.getPostExcerpt() == null) post.setPostExcerpt("");
+        if (post.getPostContent() == null) post.setPostContent("");
+        if (post.getPostTitle() == null) post.setPostTitle("");
+        if (post.getToPing() == null) post.setToPing("");
+        if (post.getPinged() == null) post.setPinged("");
+        if (post.getPostContentFiltered() == null) post.setPostContentFiltered("");
+        if (post.getCommentStatus() == null) post.setCommentStatus("open");
+        if (post.getPingStatus() == null) post.setPingStatus("open");
+        if (post.getCommentCount() == null) post.setCommentCount(0L);
+        if (post.getMenuOrder() == null) post.setMenuOrder(0);
+        if (post.getPostMimeType() == null) post.setPostMimeType("");
+        if (post.getPostPassword() == null) post.setPostPassword("");
+        if (post.getPostParent() == null) post.setPostParent(0L);
+        
+        // Save image separately
+        String imageData = post.getPostImage();
+        post.setPostImage(null);
+        
+        // ✅ Save the post
+        Post saved = postRepository.save(post);
+        System.out.println("✅ Post saved with ID: " + saved.getId());
+        
+        // ✅ Update GUID with correct ID (WordPress standard)
+        String correctGuid = "https://sqamer.com/?p=" + saved.getId();
+        saved.setGuid(correctGuid);
+        saved = postRepository.save(saved);
+        System.out.println("✅ GUID updated to: " + correctGuid);
+        
+        // Save thumbnail to postmeta
+        if (imageData != null && !imageData.isEmpty()) {
+            postMetaService.saveThumbnail(saved.getId(), imageData);
+            saved.setPostImage(imageData);
+            System.out.println("✅ Image saved for post: " + saved.getId());
+        }
+        
+        return saved;
+    }
+
+    private String generateSlug(String title) {
+        if (title == null) return "untitled";
+        return title.toLowerCase()
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .trim()
+                .replaceAll("\\s+", "-")
+                .replaceAll("-+", "-");
+    }
+
     @Transactional
     public Post updatePost(Long id, Post updatedPost) {
         Post existing = postRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         
-        // Update basic fields
         existing.setPostTitle(updatedPost.getPostTitle());
         existing.setPostContent(updatedPost.getPostContent());
         existing.setPostExcerpt(updatedPost.getPostExcerpt());
         existing.setPostStatus(updatedPost.getPostStatus());
         existing.setPostModified(LocalDateTime.now());
         
-        // Save post
+        // Update slug if title changed
+        if (updatedPost.getPostTitle() != null && !updatedPost.getPostTitle().equals(existing.getPostTitle())) {
+            String newSlug = generateSlug(updatedPost.getPostTitle());
+            existing.setPostName(newSlug);
+        }
+        
         Post saved = postRepository.save(existing);
         
-        // Handle image update
         if (updatedPost.getPostImage() != null && !updatedPost.getPostImage().isEmpty()) {
             postMetaService.saveThumbnail(saved.getId(), updatedPost.getPostImage());
             saved.setPostImage(updatedPost.getPostImage());
         } else {
-            // Keep existing image
             String existingImage = postMetaService.getThumbnail(saved.getId());
             saved.setPostImage(existingImage);
         }
@@ -153,9 +154,7 @@ private String generateSlug(String title) {
         if (!postRepository.existsById(id)) {
             throw new RuntimeException("Post not found with id: " + id);
         }
-        // Delete thumbnail from postmeta first
         postMetaService.deleteThumbnail(id);
-        // Delete post
         postRepository.deleteById(id);
     }
 
@@ -167,7 +166,6 @@ private String generateSlug(String title) {
         post.setPostModified(LocalDateTime.now());
         Post saved = postRepository.save(post);
         
-        // Set image for response
         String thumbnail = postMetaService.getThumbnail(saved.getId());
         saved.setPostImage(thumbnail);
         
@@ -182,7 +180,6 @@ private String generateSlug(String title) {
         post.setPostModified(LocalDateTime.now());
         Post saved = postRepository.save(post);
         
-        // Set image for response
         String thumbnail = postMetaService.getThumbnail(saved.getId());
         saved.setPostImage(thumbnail);
         
@@ -192,7 +189,19 @@ private String generateSlug(String title) {
     public Page<Post> getPublishedPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findByPostStatus("publish", pageable);
         
-        // Fetch thumbnails
+        posts.forEach(post -> {
+            String thumbnail = postMetaService.getThumbnail(post.getId());
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                post.setPostImage(thumbnail);
+            }
+        });
+        
+        return posts;
+    }
+
+    public Page<Post> getPublishedPostsByType(Pageable pageable, String postType) {
+        Page<Post> posts = postRepository.findByPostStatusAndPostType("publish", postType, pageable);
+        
         posts.forEach(post -> {
             String thumbnail = postMetaService.getThumbnail(post.getId());
             if (thumbnail != null && !thumbnail.isEmpty()) {
@@ -223,7 +232,6 @@ private String generateSlug(String title) {
             posts = postRepository.searchByKeyword(keyword, pageable);
         }
         
-        // Fetch thumbnails
         posts.forEach(post -> {
             String thumbnail = postMetaService.getThumbnail(post.getId());
             if (thumbnail != null && !thumbnail.isEmpty()) {

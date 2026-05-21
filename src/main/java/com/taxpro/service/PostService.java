@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class PostService {
@@ -19,21 +21,45 @@ public class PostService {
     @Autowired
     private PostMetaService postMetaService;
 
-    @Transactional
-    public Page<Post> getAllPosts(String status, Pageable pageable) {
-        Page<Post> posts = status != null && !status.isEmpty()
-            ? postRepository.findByPostStatusAndPostType(status, "post", pageable)
-            : postRepository.findByPostType("post", pageable);
-
-        posts.forEach(post -> {
-            String thumbnail = postMetaService.getThumbnail(post.getId());
-            if (thumbnail != null && !thumbnail.isEmpty()) {
-                post.setPostImage(thumbnail);
-            }
-        });
-
-        return posts;
+@Transactional
+public Page<Post> getAllPosts(String status, Pageable pageable) {
+    System.out.println("=== getAllPosts CALLED ===");
+    System.out.println("Status filter: " + status);
+    
+    Page<Post> posts;
+    if (status != null && !status.isEmpty()) {
+        posts = postRepository.findByPostStatus(status, pageable);
+        System.out.println("Filtering by status: " + status);
+    } else {
+        // ✅ Get ALL posts explicitly with sorting
+        posts = postRepository.findAll(PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.by(Sort.Direction.DESC, "postDate")
+        ));
+        System.out.println("Getting ALL posts (no filter)");
     }
+    
+    System.out.println("Total posts in page: " + posts.getNumberOfElements());
+    System.out.println("Total elements in DB: " + posts.getTotalElements());
+    
+    // Debug: Print each post's status
+    posts.forEach(post -> {
+        System.out.println("  Post ID: " + post.getId() + 
+                           " | Title: " + post.getPostTitle() + 
+                           " | Status: " + post.getPostStatus() +
+                           " | Type: " + post.getPostType());
+    });
+    
+    posts.forEach(post -> {
+        String thumbnail = postMetaService.getThumbnail(post.getId());
+        if (thumbnail != null && !thumbnail.isEmpty()) {
+            post.setPostImage(thumbnail);
+        }
+    });
+
+    return posts;
+}
 
     @Transactional
     public Post createPost(Post post) {

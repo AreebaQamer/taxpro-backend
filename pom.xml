@@ -106,6 +106,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Google Gemini AI Client -->
+<dependency>
+    <groupId>com.google.ai.client.generativeai</groupId>
+    <artifactId>generativeai</artifactId>
+    <version>0.7.0</version>
+</dependency>
         <dependency>
     <groupId>com.cloudinary</groupId>
     <artifactId>cloudinary-http44</artifactId>

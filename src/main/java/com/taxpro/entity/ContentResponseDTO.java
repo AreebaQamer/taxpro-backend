@@ -1,4 +1,4 @@
-package com.taxpro.dto;
+package com.taxpro.entity;
 
 import lombok.Data;
 import java.util.List;

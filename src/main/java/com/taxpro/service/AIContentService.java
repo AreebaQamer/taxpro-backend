@@ -1,14 +1,14 @@
 package com.taxpro.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.ai.client.generativeai.GenerativeModel;
-import com.google.ai.client.generativeai.java.GenerativeModelFutures;
-import com.google.ai.client.generativeai.type.Content;
-import com.google.ai.client.generativeai.type.GenerateContentResponse;
-import com.taxpro.dto.ContentRequestDTO;
-import com.taxpro.dto.ContentResponseDTO;
+import com.taxpro.entity.ContentRequestDTO;
+import com.taxpro.entity.ContentResponseDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AIContentService {
@@ -17,63 +17,77 @@ public class AIContentService {
     private String geminiApiKey;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WebClient webClient = WebClient.create();
 
-    public ContentResponseDTO generateArticle(ContentRequestDTO request) throws Exception {
-        String aiJsonResponse = callGeminiForArticle(request);
-        return objectMapper.readValue(aiJsonResponse, ContentResponseDTO.class);
-    }
-
-    private String callGeminiForArticle(ContentRequestDTO request) throws Exception {
-        if (geminiApiKey == null || geminiApiKey.isEmpty()) {
-            throw new IllegalStateException("Gemini API key not found! Please set GEMINI_API_KEY in application.properties");
-        }
-
-        GenerativeModel model = new GenerativeModel("gemini-2.0-flash-exp", geminiApiKey);
-        GenerativeModelFutures modelFutures = GenerativeModelFutures.from(model);
-
-        String serviceName = request.getServiceName();
-        String category = request.getCategory();
-
+    public ContentResponseDTO generateServiceContent(ContentRequestDTO request) throws Exception {
+        // 1. Prompt banayein
         String prompt = String.format(
-            "You are a professional content writer for S.Qamer & Co., a top tax consultancy firm in Pakistan with 20+ years of experience.\n\n" +
-            "Write a detailed, informative, and client-friendly article about: '%s' in the category '%s'.\n\n" +
-            "The article should be written for Pakistani clients who are looking for professional tax services.\n\n" +
+            "You are a professional content writer for S.Qamer & Co., a top tax consultancy firm in Pakistan.\n\n" +
+            "Write detailed content for the service: '%s' in the category '%s'.\n\n" +
             "Return ONLY valid JSON with these exact keys (no markdown, no extra text):\n" +
             "{\n" +
+            "  \"tag\": \"A short 2-3 word tagline (e.g., 'Tax Registration')\",\n" +
             "  \"title\": \"An engaging, SEO-friendly title for this service (max 60 characters)\",\n" +
-            "  \"metaDescription\": \"A 155-160 character meta description for SEO\",\n" +
-            "  \"overview\": \"A 3-4 sentence introduction explaining what this service is and why it's important\",\n" +
-            "  \"whoIsItFor\": \"A detailed 2-3 sentence paragraph explaining who specifically needs this service (e.g., Freelancers, Salaried Employees, Business Owners)\",\n" +
-            "  \"keyBenefits\": [\n" +
-            "    \"Benefit 1 with brief explanation (e.g., 'Legal Compliance: Stay compliant with FBR regulations')\",\n" +
-            "    \"Benefit 2 with brief explanation\",\n" +
-            "    \"Benefit 3 with brief explanation\",\n" +
-            "    \"Benefit 4 with brief explanation\"\n" +
+            "  \"desc\": \"A 1-2 sentence description that appears in the hero section\",\n" +
+            "  \"breadcrumb\": \"Breadcrumb text (e.g., 'Home › Tax Matters › NTN Registration')\",\n" +
+            "  \"intro\": \"A 2-3 sentence introduction explaining what this service is and why it's important (HTML with <p> tags)\",\n" +
+            "  \"cards\": [\n" +
+            "    {\"icon\": \"👤\", \"title\": \"Card Title 1\", \"desc\": \"Brief description\", \"link\": \"/link1\"},\n" +
+            "    {\"icon\": \"🏪\", \"title\": \"Card Title 2\", \"desc\": \"Brief description\", \"link\": \"/link2\"}\n" +
             "  ],\n" +
-            "  \"requiredDocs\": \"A comprehensive paragraph listing all documents needed for this service\",\n" +
-            "  \"processSummary\": \"A step-by-step paragraph explaining how S.Qamer & Co. handles this service (4-5 sentences)\",\n" +
-            "  \"faq\": [\n" +
+            "  \"steps\": [\"Step 1 description\", \"Step 2 description\", \"Step 3 description\", \"Step 4 description\"],\n" +
+            "  \"docs\": [\"Document 1\", \"Document 2\", \"Document 3\"],\n" +
+            "  \"faqs\": [\n" +
             "    {\"question\": \"Frequently asked question 1?\", \"answer\": \"Detailed answer with 2-3 sentences\"},\n" +
-            "    {\"question\": \"Frequently asked question 2?\", \"answer\": \"Detailed answer with 2-3 sentences\"},\n" +
-            "    {\"question\": \"Frequently asked question 3?\", \"answer\": \"Detailed answer with 2-3 sentences\"}\n" +
+            "    {\"question\": \"Frequently asked question 2?\", \"answer\": \"Detailed answer with 2-3 sentences\"}\n" +
             "  ],\n" +
-            "  \"conclusion\": \"A 2-3 sentence closing paragraph that encourages the reader to contact S.Qamer & Co. for expert assistance\"\n" +
+            "  \"ctaTitle\": \"Ready to Get Started?\",\n" +
+            "  \"ctaSub\": \"Contact our experts today for fast, hassle-free service.\",\n" +
+            "  \"sidebarLinks\": [\n" +
+            "    {\"label\": \"NTN Registration\", \"href\": \"/tax-registration\"},\n" +
+            "    {\"label\": \"Sales Tax Registration\", \"href\": \"/sales-tax-registration\"}\n" +
+            "  ],\n" +
+            "  \"sidebarCta\": \"Need Help?\",\n" +
+            "  \"sidebarDesc\": \"Speak directly with our expert for personalized assistance.\"\n" +
             "}\n\n" +
-            "Important: Make it relevant to Pakistani tax laws and FBR procedures. Use examples like NTN registration, FBR IRIS portal, etc.\n" +
-            "Keep the tone professional, trustworthy, and easy to understand for someone with no tax background.",
-            serviceName, category
+            "Make it relevant to Pakistani tax laws and FBR procedures. Keep the tone professional and easy to understand.",
+            request.getServiceName(), request.getCategory()
         );
 
-        Content content = new Content.Builder()
-            .addText(prompt)
-            .build();
+        // 2. Gemini API Request Body
+        Map<String, Object> requestBody = Map.of(
+            "contents", new Object[] {
+                Map.of("parts", new Object[] {
+                    Map.of("text", prompt)
+                })
+            }
+        );
 
-        GenerateContentResponse response = modelFutures.generateContent(content).get();
-        String aiResponse = response.getText();
+        // 3. Gemini API Call
+        String response = webClient.post()
+            .uri("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=" + geminiApiKey)
+            .header("Content-Type", "application/json")
+            .bodyValue(requestBody)
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+
+        // 4. Parse Gemini Response
+        Map<String, Object> geminiResponse = objectMapper.readValue(response, Map.class);
         
-        // Clean markdown if present
-        aiResponse = aiResponse.replace("```json", "").replace("```", "").trim();
+        // Extract text from Gemini response
+        List<Map<String, Object>> candidates = (List<Map<String, Object>>) geminiResponse.get("candidates");
+        Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
+        List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+        String generatedText = (String) parts.get(0).get("text");
 
-        return aiResponse;
+        // 5. Clean JSON (remove markdown)
+        String cleanJson = generatedText
+            .replace("```json", "")
+            .replace("```", "")
+            .trim();
+
+        // 6. Parse to DTO
+        return objectMapper.readValue(cleanJson, ContentResponseDTO.class);
     }
 }

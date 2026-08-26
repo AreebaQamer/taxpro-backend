@@ -1,7 +1,7 @@
 package com.taxpro.controller;
 
-import com.taxpro.dto.ContentRequestDTO;
-import com.taxpro.dto.ContentResponseDTO;
+import com.taxpro.entity.ContentRequestDTO;
+import com.taxpro.entity.ContentResponseDTO;
 import com.taxpro.service.AIContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,12 @@ public class AIContentController {
     @Autowired
     private AIContentService aiContentService;
 
-    @PostMapping("/generate-article")
-    public ResponseEntity<?> generateArticle(@RequestBody ContentRequestDTO request) {
+    @PostMapping("/generate-service-content")
+    public ResponseEntity<?> generateServiceContent(@RequestBody ContentRequestDTO request) {
         try {
-            System.out.println("📝 Generating article for: " + request.getServiceName());
-            ContentResponseDTO content = aiContentService.generateArticle(request);
+            System.out.println("📝 Generating content for: " + request.getServiceName());
+            // ✅ Method name match karein
+            ContentResponseDTO content = aiContentService.generateServiceContent(request);
             return ResponseEntity.ok(content);
         } catch (Exception e) {
             e.printStackTrace();

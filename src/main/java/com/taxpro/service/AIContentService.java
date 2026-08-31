@@ -63,9 +63,9 @@ public class AIContentService {
             }
         );
 
-        // 3. Gemini API Call
+        // 3. Gemini API Call - ✅ MODEL NAME FIXED
         String response = webClient.post()
-            .uri("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=" + geminiApiKey)
+            .uri("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + geminiApiKey)
             .header("Content-Type", "application/json")
             .bodyValue(requestBody)
             .retrieve()

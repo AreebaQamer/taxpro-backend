@@ -51,4 +51,6 @@ Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword,
                                      Pageable pageable);
  Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
 Page<Post> findByPostType(String postType, Pageable pageable);
+@Query("SELECT p FROM Post p WHERE p.category.slug = :slug AND p.postStatus = 'publish' AND p.postType = 'post'")
+Page<Post> findPublishedPostsByCategorySlug(@Param("slug") String slug, Pageable pageable);
 }

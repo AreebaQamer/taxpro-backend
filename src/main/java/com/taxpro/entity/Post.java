@@ -1,11 +1,10 @@
 
 
 package com.taxpro.entity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import com.taxpro.entity.Category; 
 
 @Entity
 @Table(name = "wppw_posts")
@@ -88,19 +87,7 @@ private String postPassword = "";
 
 @Column(name = "post_parent")
 private Long postParent = 0L;
-
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "category_id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-private Category category; 
-
-public Category getCategory() {
-    return category;
-}
-
-public void setCategory(Category category) {
-    this.category = category;
-}
+    
     // Constructors
     public Post() {}
     

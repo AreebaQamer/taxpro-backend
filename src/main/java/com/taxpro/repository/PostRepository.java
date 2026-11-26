@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import com.taxpro.entity.Category;
 import org.springframework.data.repository.query.Param;
 
 @Repository
@@ -31,24 +32,31 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         @org.springframework.data.repository.query.Param("id") Long id
     );
 
-// ✅ CORRECT - This looks for your saved base64 images
-@Query("SELECT pm.metaValue FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = '_thumbnail_url'")
-String findThumbnailByPostId(@Param("postId") Long postId);
-// Add to PostRepository.java
-@Query("SELECT p FROM Post p WHERE " +
-       "LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-Page<Post> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    // ✅ CORRECT - This looks for your saved base64 images
+    @Query("SELECT pm.metaValue FROM PostMeta pm WHERE pm.postId = :postId AND pm.metaKey = '_thumbnail_url'")
+    String findThumbnailByPostId(@Param("postId") Long postId);
 
-@Query("SELECT p FROM Post p WHERE " +
-       "p.postStatus = :status AND " +
-       "(LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-       "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-       "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword, 
-                                     @Param("status") String status, 
-                                     Pageable pageable);
- Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
-Page<Post> findByPostType(String postType, Pageable pageable);
+    // Add to PostRepository.java
+    @Query("SELECT p FROM Post p WHERE " +
+           "LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Post> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE " +
+           "p.postStatus = :status AND " +
+           "(LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(p.postExcerpt) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    Page<Post> searchByKeywordAndStatus(@Param("keyword") String keyword, 
+                                         @Param("status") String status, 
+                                         Pageable pageable);
+                                         
+    Page<Post> findByPostStatusAndPostType(String status, String postType, Pageable pageable);
+    Page<Post> findByPostType(String postType, Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.category.slug = :slug AND p.postStatus = 'publish' AND p.postType = 'post'")
+    Page<Post> findPublishedPostsByCategorySlug(@Param("slug") String slug, Pageable pageable);
+    @Query("SELECT p.category FROM Post p WHERE LOWER(p.postTitle) = LOWER(:postTitle)")
+Optional<Category> findCategoryByPostTitle(@Param("postTitle") String postTitle);
 }
